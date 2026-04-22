@@ -3,66 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>East Coast Bafang Service Hub</title>
+    <title>East Coast Bafang Service Hub | Alliance, OH</title>
     <style>
-        :root { --main-blue: #0056b3; --success-green: #28a745; }
-        body { font-family: sans-serif; margin: 0; padding: 20px; background: #f4f4f4; }
-        .container { max-width: 1000px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px; }
-        .card { border: 1px solid #ddd; padding: 15px; border-radius: 8px; text-align: center; transition: 0.3s; }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        .btn { background: var(--main-blue); color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; width: 100%; }
-        .btn-claim { background: var(--success-green); }
-        input, textarea { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        :root {
+            --primary: #002d62;
+            --secondary: #ffcc00;
+            --accent: #28a745;
+            --light: #f8f9fa;
+            --dark: #212529;
+        }
+
+        /* Smooth Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #f4f4f4; color: var(--dark); }
+        
+        /* Navigation */
+        nav { background: var(--primary); color: white; padding: 15px 30px; display: flex; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        nav a { color: white; text-decoration: none; font-weight: bold; margin-left: 20px; }
+
+        /* Header */
+        header { background: var(--primary); color: white; padding: 60px 20px; text-align: center; border-bottom: 5px solid var(--secondary); }
+        header h1 { margin: 0; font-size: 2.5rem; animation: fadeInUp 0.8s ease; }
+
+        .container { max-width: 1100px; margin: -30px auto 40px; padding: 20px; position: relative; }
+
+        /* Sections */
+        section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); animation: fadeInUp 1s ease; }
+        h2 { border-left: 5px solid var(--secondary); padding-left: 15px; color: var(--primary); }
+
+        /* Grid for Bikes & Parts */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 20px; }
+        .card { border: 1px solid #eee; padding: 15px; border-radius: 10px; text-align: center; transition: 0.3s; }
+        .card:hover { transform: translateY(-5px); border-color: var(--secondary); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .card img { max-width: 100%; border-radius: 8px; }
+
+        /* Buttons */
+        .btn { background: var(--primary); color: white; border: none; padding: 12px; border-radius: 6px; cursor: pointer; width: 100%; font-weight: bold; transition: 0.2s; }
+        .btn:hover { background: #004494; transform: scale(1.02); }
+        .btn-buy { background: var(--accent); margin-top: 10px; }
+
+        /* Forms */
+        input, textarea { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
+        .success-msg { color: var(--accent); font-weight: bold; display: none; margin-top: 10px; }
     </style>
 </head>
 <body>
 
+<nav>
+    <div>East Coast Bafang</div>
+    <div>
+        <a href="#bikes">Bikes</a>
+        <a href="#parts">Parts</a>
+        <a href="#warranty">Warranty</a>
+    </div>
+</nav>
+
+<header>
+    <h1>East Coast E-Bike Warranty Repair Center</h1>
+    <p>Official Service & Sales for Alliance, Ohio</p>
+</header>
+
 <div class="container">
-    <h1>East Coast Bafang Service Hub</h1>
-    <p>Official Warranty Repair & Parts Center</p>
+    
+    <section id="bikes">
+        <h2>Featured E-Bikes</h2>
+        <p>Complete builds ready for local pickup.</p>
+        <div id="bike-list" class="grid">
+            <p>Loading the showroom...</p>
+        </div>
+    </section>
 
-    <hr>
+    <section id="parts">
+        <h2>Parts Inventory</h2>
+        <p>Order Bafang components and replacement hardware.</p>
+        <div id="inventory-list" class="grid">
+            <p>Scanning inventory...</p>
+        </div>
+    </section>
 
-    <h2>Parts Inventory</h2>
-    <div id="inventory-list" class="grid">Loading parts...</div>
+    <section id="warranty">
+        <h2>File a Warranty Claim</h2>
+        <form id="claimForm">
+            <input type="text" id="name" placeholder="Full Name" required>
+            <input type="email" id="email" placeholder="Email Address" required>
+            <input type="text" id="serial" placeholder="Motor Serial Number" required>
+            <textarea id="issue" placeholder="Describe the issue..." rows="4" required></textarea>
+            <button type="submit" class="btn" id="submitBtn">Submit Automated Claim</button>
+            <div id="responseMsg" class="success-msg">Claim submitted successfully! We will contact you shortly.</div>
+        </form>
+    </section>
 
-    <hr>
-
-    <h2>File a Warranty Claim</h2>
-    <form id="claimForm">
-        <input type="text" id="name" placeholder="Your Name" required>
-        <input type="email" id="email" placeholder="Email Address" required>
-        <input type="text" id="serial" placeholder="Motor/Controller Serial Number" required>
-        <textarea id="issue" placeholder="Describe the issue..." rows="4" required></textarea>
-        <button type="submit" class="btn btn-claim">Submit Claim Automatically</button>
-    </form>
 </div>
 
-<script>
-    const BACKEND_URL = "https://your-app-name.onrender.com"; // UPDATE THIS LATER
+<footer style="text-align: center; color: #888; padding-bottom: 40px;">
+    &copy; 2026 East Coast E-Bike Warranty Claims Repair Center LLC
+</footer>
 
-    // Fetch Inventory Automatically
-    async function loadInventory() {
+<script>
+    // --- CONNECT TO YOUR BACKEND ---
+    // Update this URL with your Render link when ready
+    const BACKEND_URL = "https://your-app-name.onrender.com"; 
+
+    async function loadData() {
         try {
             const res = await fetch(`${BACKEND_URL}/inventory`);
             const items = await res.json();
-            const list = document.getElementById('inventory-list');
-            list.innerHTML = items.map(item => `
+            
+            const bikeList = document.getElementById('bike-list');
+            const partList = document.getElementById('inventory-list');
+
+            // Separate and show Bikes
+            const bikes = items.filter(i => i.category === 'bike');
+            bikeList.innerHTML = bikes.map(item => `
                 <div class="card">
+                    <img src="${item.img || 'https://placehold.co/300x200?text=E-Bike'}" alt="Bike">
                     <h3>${item.name}</h3>
-                    <p>$${item.price}</p>
-                    <button class="btn" onclick="buyItem('${item.id}')">Buy Now</button>
+                    <p><strong>$${item.price}</strong></p>
+                    <button class="btn btn-buy" onclick="buy('${item.id}')">Inquire/Buy</button>
                 </div>
             `).join('');
+
+            // Separate and show Parts
+            const parts = items.filter(i => i.category === 'part');
+            partList.innerHTML = parts.map(item => `
+                <div class="card">
+                    <img src="${item.img || 'https://placehold.co/300x200?text=Part'}" alt="Part">
+                    <h3>${item.name}</h3>
+                    <p><strong>$${item.price}</strong></p>
+                    <button class="btn btn-buy" onclick="buy('${item.id}')">Add to Cart</button>
+                </div>
+            `).join('');
+
         } catch (e) {
-            document.getElementById('inventory-list').innerHTML = "Error loading inventory.";
+            bikeList.innerHTML = "<p>Visit us in Alliance for current bike builds.</p>";
+            partList.innerHTML = "<p>Parts list currently updating. Contact us for stock.</p>";
         }
     }
 
-    // Submit Claim Automatically
+    // Handle Warranty Form
     document.getElementById('claimForm').onsubmit = async (e) => {
         e.preventDefault();
+        const btn = document.getElementById('submitBtn');
+        btn.innerText = "Sending...";
+        
         const data = {
             customer_name: document.getElementById('name').value,
             email: document.getElementById('email').value,
@@ -70,21 +158,25 @@
             issue_description: document.getElementById('issue').value
         };
 
-        const res = await fetch(`${BACKEND_URL}/submit-claim`, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(data)
-        });
-
-        if (res.ok) alert("Claim submitted and logged! We'll contact you soon.");
+        try {
+            await fetch(`${BACKEND_URL}/submit-claim`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            });
+            document.getElementById('responseMsg').style.display = 'block';
+            document.getElementById('claimForm').reset();
+        } catch (err) {
+            alert("Connection error. Please try again.");
+        }
+        btn.innerText = "Submit Automated Claim";
     };
 
-    loadInventory();
-
-    function buyItem(id) {
-        alert("Redirecting to secure checkout for item " + id);
-        // Link to Stripe here
+    function buy(id) {
+        alert("Redirecting to checkout for item: " + id);
     }
+
+    loadData();
 </script>
 
 </body>
