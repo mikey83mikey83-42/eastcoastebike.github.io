@@ -81,4 +81,25 @@ async def add_shipping(tracking: str, carrier: str):
 async def generate_art(prompt: str):
     # We will plug the AI generation code here next!
     return {"message": f"Ready to generate visual for: {prompt}"}
+    @app.post("/complete-repair")
+async def complete_repair(claim_id: str, tracking: str):
+    # 1. Generate the 'Cool Visual' for the Certificate
+    # (Placeholder for the AI image call)
+    image_url = "https://api.ai-generator.com/v1/east-coast-ebike-cert.png"
+    
+    # 2. Save everything to Supabase in one shot
+    repair_data = {
+        "claim_id": claim_id,
+        "tracking_number": tracking,
+        "certificate_url": image_url,
+        "status": "Shipped & Certified"
+    }
+    
+    result = supabase.table("repair_history").insert(repair_data).execute()
+    
+    return {
+        "message": "Process Automated!",
+        "view_certificate": image_url,
+        "tracking_status": "Live"
+    }
     
