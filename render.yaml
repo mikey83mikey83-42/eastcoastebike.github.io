@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: east-coast-ebike-api
+    runtime: python
+    plan: starter
+    region: ohio # Keeps it local to your Alliance operations
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn main:app -k uvicorn.workers.UvicornWorker
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.14.3
+      - key: SUPABASE_URL
+        sync: false # Set this in the Render Dashboard for security
+      - key: SUPABASE_KEY
+        sync: false # Set this in the Render Dashboard for security
+        
