@@ -3,181 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>East Coast Bafang Service Hub | Alliance, OH</title>
-    <style>
-        :root {
-            --primary: #002d62;
-            --secondary: #ffcc00;
-            --accent: #28a745;
-            --light: #f8f9fa;
-            --dark: #212529;
-        }
-
-        /* Smooth Animations */
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        html { scroll-behavior: smooth; }
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #f4f4f4; color: var(--dark); }
-        
-        /* Navigation */
-        nav { background: var(--primary); color: white; padding: 15px 30px; display: flex; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        nav a { color: white; text-decoration: none; font-weight: bold; margin-left: 20px; }
-
-        /* Header */
-        header { background: var(--primary); color: white; padding: 60px 20px; text-align: center; border-bottom: 5px solid var(--secondary); }
-        header h1 { margin: 0; font-size: 2.5rem; animation: fadeInUp 0.8s ease; }
-
-        .container { max-width: 1100px; margin: -30px auto 40px; padding: 20px; position: relative; }
-
-        /* Sections */
-        section { background: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); animation: fadeInUp 1s ease; }
-        h2 { border-left: 5px solid var(--secondary); padding-left: 15px; color: var(--primary); }
-
-        /* Grid for Bikes & Parts */
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 20px; }
-        .card { border: 1px solid #eee; padding: 15px; border-radius: 10px; text-align: center; transition: 0.3s; }
-        .card:hover { transform: translateY(-5px); border-color: var(--secondary); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .card img { max-width: 100%; border-radius: 8px; }
-
-        /* Buttons */
-        .btn { background: var(--primary); color: white; border: none; padding: 12px; border-radius: 6px; cursor: pointer; width: 100%; font-weight: bold; transition: 0.2s; }
-        .btn:hover { background: #004494; transform: scale(1.02); }
-        .btn-buy { background: var(--accent); margin-top: 10px; }
-
-        /* Forms */
-        input, textarea { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
-        .success-msg { color: var(--accent); font-weight: bold; display: none; margin-top: 10px; }
-    </style>
+    <title>East Coast E-Bike | Tech Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-slate-900 text-white font-sans selection:bg-cyan-500">
 
-<nav>
-    <div>East Coast Bafang</div>
-    <div>
-        <a href="#bikes">Bikes</a>
-        <a href="#parts">Parts</a>
-        <a href="#warranty">Warranty</a>
-    </div>
-</nav>
-
-<header>
-    <h1>East Coast E-Bike Warranty Repair Center</h1>
-    <p>Official Service & Sales for Alliance, Ohio</p>
-</header>
-
-<div class="container">
-    
-    <section id="bikes">
-        <h2>Featured E-Bikes</h2>
-        <p>Complete builds ready for local pickup.</p>
-        <div id="bike-list" class="grid">
-            <p>Loading the showroom...</p>
+    <nav class="p-6 border-b border-cyan-500/20 flex justify-between items-center bg-slate-900/50 backdrop-blur-md sticky top-0 z-50">
+        <div>
+            <h1 class="text-2xl font-black tracking-tighter text-cyan-400">EAST COAST E-BIKE</h1>
+            <p class="text-[10px] uppercase tracking-[0.2em] text-slate-500">Warranty Claims & Repair Center</p>
         </div>
-    </section>
-
-    <section id="parts">
-        <h2>Parts Inventory</h2>
-        <p>Order Bafang components and replacement hardware.</p>
-        <div id="inventory-list" class="grid">
-            <p>Scanning inventory...</p>
+        <div class="flex items-center gap-4">
+            <span class="hidden md:inline text-xs text-slate-400 font-mono">STATION: ALLIANCE_OH</span>
+            <div class="h-2 w-2 rounded-full bg-green-500 animate-pulse"></div>
         </div>
-    </section>
+    </nav>
 
-    <section id="warranty">
-        <h2>File a Warranty Claim</h2>
-        <form id="claimForm">
-            <input type="text" id="name" placeholder="Full Name" required>
-            <input type="email" id="email" placeholder="Email Address" required>
-            <input type="text" id="serial" placeholder="Motor Serial Number" required>
-            <textarea id="issue" placeholder="Describe the issue..." rows="4" required></textarea>
-            <button type="submit" class="btn" id="submitBtn">Submit Automated Claim</button>
-            <div id="responseMsg" class="success-msg">Claim submitted successfully! We will contact you shortly.</div>
-        </form>
-    </section>
+    <main class="max-w-5xl mx-auto p-6 md:p-12">
+        <header class="mb-12">
+            <h2 class="text-5xl font-extrabold mb-4 bg-gradient-to-r from-white to-slate-500 bg-clip-text text-transparent">Diagnostic Portal</h2>
+            <p class="text-slate-400 max-w-xl">Plug in your Bafang programming cable to begin real-time system analysis and firmware verification.</p>
+        </header>
 
-</div>
-
-<footer style="text-align: center; color: #888; padding-bottom: 40px;">
-    &copy; 2026 East Coast E-Bike Warranty Claims Repair Center LLC
-</footer>
-
-<script>
-    // --- CONNECT TO YOUR BACKEND ---
-    // Update this URL with your Render link when ready
-    const BACKEND_URL = "https://your-app-name.onrender.com"; 
-
-    async function loadData() {
-        try {
-            const res = await fetch(`${BACKEND_URL}/inventory`);
-            const items = await res.json();
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
-            const bikeList = document.getElementById('bike-list');
-            const partList = document.getElementById('inventory-list');
-
-            // Separate and show Bikes
-            const bikes = items.filter(i => i.category === 'bike');
-            bikeList.innerHTML = bikes.map(item => `
-                <div class="card">
-                    <img src="${item.img || 'https://placehold.co/300x200?text=E-Bike'}" alt="Bike">
-                    <h3>${item.name}</h3>
-                    <p><strong>$${item.price}</strong></p>
-                    <button class="btn btn-buy" onclick="buy('${item.id}')">Inquire/Buy</button>
+            <div class="lg:col-span-1 bg-slate-800/50 p-8 rounded-3xl border border-slate-700 hover:border-cyan-500/50 transition-all duration-500 shadow-2xl">
+                <div class="mb-6">
+                    <div class="h-12 w-12 bg-cyan-500/10 rounded-xl flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold">System Interface</h3>
                 </div>
-            `).join('');
-
-            // Separate and show Parts
-            const parts = items.filter(i => i.category === 'part');
-            partList.innerHTML = parts.map(item => `
-                <div class="card">
-                    <img src="${item.img || 'https://placehold.co/300x200?text=Part'}" alt="Part">
-                    <h3>${item.name}</h3>
-                    <p><strong>$${item.price}</strong></p>
-                    <button class="btn btn-buy" onclick="buy('${item.id}')">Add to Cart</button>
+                
+                <button id="connectBtn" class="w-full bg-cyan-600 hover:bg-cyan-500 text-white py-4 rounded-2xl font-black transition-all transform active:scale-95 shadow-lg shadow-cyan-900/20">
+                    CONNECT BIKE
+                </button>
+                
+                <div class="mt-6 p-4 bg-slate-900/50 rounded-xl border border-slate-700/50">
+                    <p id="status" class="text-xs font-mono text-slate-500 text-center uppercase tracking-widest">Waiting for USB...</p>
                 </div>
-            `).join('');
+            </div>
 
-        } catch (e) {
-            bikeList.innerHTML = "<p>Visit us in Alliance for current bike builds.</p>";
-            partList.innerHTML = "<p>Parts list currently updating. Contact us for stock.</p>";
+            <div class="lg:col-span-2 bg-slate-800/50 p-8 rounded-3xl border border-slate-700">
+                <h3 class="text-xl font-bold mb-8 flex items-center gap-2">
+                    <span class="h-2 w-2 bg-cyan-400 rounded-full"></span>
+                    Live Telemetry
+                </h3>
+                
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+                    <div class="p-4 bg-slate-900/30 rounded-2xl border border-slate-700/30">
+                        <p class="text-[10px] text-slate-500 uppercase font-bold mb-1">Voltage</p>
+                        <p class="text-2xl font-mono text-cyan-400" id="ui-volt">--.-V</p>
+                    </div>
+                    <div class="p-4 bg-slate-900/30 rounded-2xl border border-slate-700/30">
+                        <p class="text-[10px] text-slate-500 uppercase font-bold mb-1">Current Limit</p>
+                        <p class="text-2xl font-mono text-cyan-400" id="ui-amp">--A</p>
+                    </div>
+                    <div class="p-4 bg-slate-900/30 rounded-2xl border border-slate-700/30">
+                        <p class="text-[10px] text-slate-500 uppercase font-bold mb-1">Firmware</p>
+                        <p class="text-sm font-mono text-cyan-400 truncate" id="ui-fw">NO_DATA</p>
+                    </div>
+                </div>
+
+                <div class="mt-8 pt-8 border-t border-slate-700/50">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-xs font-bold text-slate-400">LOG OUTPUT</span>
+                        <span class="text-[10px] font-mono text-slate-600">v1.0.4-STARK</span>
+                    </div>
+                    <div class="bg-black/40 p-4 rounded-xl font-mono text-[10px] text-green-500/80 h-32 overflow-y-auto" id="console">
+                        > SYSTEM IDLE...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const connectBtn = document.getElementById('connectBtn');
+        const statusText = document.getElementById('status');
+        const consoleLog = document.getElementById('console');
+
+        function updateLog(msg) {
+            const entry = document.createElement('div');
+            entry.innerText = `> ${msg}`;
+            consoleLog.appendChild(entry);
+            consoleLog.scrollTop = consoleLog.scrollHeight;
         }
-    }
 
-    // Handle Warranty Form
-    document.getElementById('claimForm').onsubmit = async (e) => {
-        e.preventDefault();
-        const btn = document.getElementById('submitBtn');
-        btn.innerText = "Sending...";
-        
-        const data = {
-            customer_name: document.getElementById('name').value,
-            email: document.getElementById('email').value,
-            serial_number: document.getElementById('serial').value,
-            issue_description: document.getElementById('issue').value
-        };
-
-        try {
-            await fetch(`${BACKEND_URL}/submit-claim`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(data)
-            });
-            document.getElementById('responseMsg').style.display = 'block';
-            document.getElementById('claimForm').reset();
-        } catch (err) {
-            alert("Connection error. Please try again.");
-        }
-        btn.innerText = "Submit Automated Claim";
-    };
-
-    function buy(id) {
-        alert("Redirecting to checkout for item: " + id);
-    }
-
-    loadData();
-</script>
-
+        connectBtn.addEventListener('click', async () => {
+            if ("serial" in navigator) {
+                try {
+                    const port = await navigator.serial.requestPort();
+                    await port.open({ baudRate: 1200 }); // Bafang Standard
+                    
+                    statusText.innerText = "LINK ACTIVE";
+                    statusText.classList.remove('text-slate-500');
+                    statusText.classList.add('text-green-400', 'animate-pulse');
+                    
+                    updateLog("PORT OPENED SUCCESSFULLY");
+                    updateLog("INITIALIZING BAFANG HANDSHAKE...");
+                    
+                    // Here is where your JavaScript would send the 
+                    // diagnostic commands to the controller.
+                    
+                } catch (err) {
+                    updateLog("ERROR: " + err.message);
+                    statusText.innerText = "LINK FAILED";
+                    statusText.classList.add('text-red-400');
+                }
+            } else {
+                alert("Please use Chrome or Edge to access the Diagnostic Portal.");
+            }
+        });
+    </script>
 </body>
-</html>
+                    </html>
+                    
