@@ -1,115 +1,52 @@
-from fastapi import FastAPI, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-from supabase import create_client, Client
 import os
-
-# --- THIS IS THE VARIABLE RENDER IS LOOKING FOR ---
-app = FastAPI(title="East Coast E-Bike Tech Hub")
-
-# CORS Setup - Allows your GitHub Pages site to talk to this API
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"], # For production, you can change this to your specific GitHub URL
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-# Supabase Credentials (Ensure these are set in Render's Environment Variables)
-SUPABASE_URL = os.environ.get("SUPABASE_URL")
-SUPABASE_KEY = os.environ.get("SUPABASE_KEY")
-
-# Only initialize if keys exist to prevent crashing on build
-if SUPABASE_URL and SUPABASE_KEY:
-    supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
-else:
-    print("WARNING: Supabase credentials missing!")
-
-# Data model for Bafang diagnostics
-class Diagnostic(BaseModel):
-    serial_number: str
-    firmware_ver: str
-    error_codes: list
-    mileage: int
-
-@app.get("/")
-def read_root():
-    return {"status": "Online", "service": "East Coast E-Bike API"}
-
-@app.post("/sync")
-async def sync_data(data: Diagnostic):
-    try:
-        response = supabase.table("motor_logs").insert({
-            "serial_number": data.serial_number,
-            "firmware_ver": data.firmware_ver,
-            "errors": data.error_codes,
-            "mileage": data.mileage
-        }).execute()
-        return {"status": "Success", "id": response.data[0]['id']}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-# This block ensures it runs correctly if you test it locally
-if __name__ == "__main__":
-    import uvicorn
-    port = int(os.environ.get("PORT", 10000))
-    uvicorn.run(app, host="0.0.0.0", port=port)
-    import os
+import base64
+import json
+import requests
 from fastapi import FastAPI
-from supabase import create_client, Client
 
 app = FastAPI()
 
-# Connect to your new "Memory"
-url = os.environ.get("SUPABASE_URL")
-key = os.environ.get("SUPABASE_KEY")
-supabase: Client = create_client(url, key)
+# --- CONFIGURATION (Set these in Render Env Vars) ---
+GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN")
+HF_TOKEN = os.environ.get("HF_TOKEN")
+REPO_NAME = "mikey83mikey83-42/eastcoastebike.github.io" 
+DB_FILE = "repairs.json"
 
+# --- HELPERS ---
+def save_to_github(new_data):
+    url = f"https://api.github.com/repos/{REPO_NAME}/contents/{DB_FILE}"
+    headers = {"Authorization": f"token {GITHUB_TOKEN}"}
+    
+    # Get the file to find the 'sha' and current content
+    r = requests.get(url, headers=headers).json()
+    sha = r['sha']
+    content = json.loads(base64.b64decode(r['content']))
+    
+    content.append(new_data)
+    
+    # Push update
+    updated_b64 = base64.b64encode(json.dumps(content, indent=4).encode()).decode()
+    payload = {"message": "Automated log update", "content": updated_b64, "sha": sha}
+    requests.put(url, headers=headers, json=payload)
+
+# --- ROUTES ---
 @app.get("/")
 async def root():
-    return {"status": "Online", "service": "East Coast E-Bike API", "database": "Connected"}
+    return {"status": "Online", "service": "East Coast E-Bike API", "database": "GitHub-Linked"}
 
-# This will handle your automated shipping logic later
-@app.post("/add-shipping")
-async def add_shipping(tracking: str, carrier: str):
-    data = {"tracking_number": tracking, "carrier": carrier}
-    response = supabase.table("shipping_logs").insert(data).execute()
-    return {"message": "Shipping record saved!", "data": response.data}
-
-# This will be where we trigger those cool AI visuals
-@app.post("/generate-art")
-async def generate_art(prompt: str):
-    # We will plug the AI generation code here next!
-    return {"message": f"Ready to generate visual for: {prompt}"}
-    @app.post("/complete-repair")
-async def complete_repair(claim_id: str, tracking: str):
-    # 1. Generate the 'Cool Visual' for the Certificate
-    # (Placeholder for the AI image call)
-    image_url = "https://api.ai-generator.com/v1/east-coast-ebike-cert.png"
-    
-    # 2. Save everything to Supabase in one shot
-    repair_data = {
-        "claim_id": claim_id,
-        "tracking_number": tracking,
-        "certificate_url": image_url,
-        "status": "Shipped & Certified"
+@app.post("/log-repair")
+async def log_repair(customer: str, motor: str, tracking: str):
+    # 1. Prepare data entry
+    entry = {
+        "customer": customer,
+        "motor": motor,
+        "tracking": tracking,
+        "status": "Shipped",
+        "timestamp": "2026-04-23"
     }
     
-    result = supabase.table("repair_history").insert(repair_data).execute()
+    # 2. Save to GitHub automatically
+    save_to_github(entry)
     
-    return {
-        "message": "Process Automated!",
-        "view_certificate": image_url,
-        "tracking_status": "Live"
-    }
+    return {"message": f"Ol' boy, {customer}'s repair is logged and live!"}
     
-import requests
-
-HF_TOKEN = os.environ.get("HF_TOKEN")
-API_URL = "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-schnell"
-
-def generate_free_image(prompt_text):
-    headers = {"Authorization": f"Bearer {HF_TOKEN}"}
-    response = requests.post(API_URL, headers=headers, json={"inputs": prompt_text})
-    # This returns the raw image data to save to Supabase
-    return response.content 
