@@ -54,4 +54,31 @@ if __name__ == "__main__":
     import uvicorn
     port = int(os.environ.get("PORT", 10000))
     uvicorn.run(app, host="0.0.0.0", port=port)
+    import os
+from fastapi import FastAPI
+from supabase import create_client, Client
+
+app = FastAPI()
+
+# Connect to your new "Memory"
+url = os.environ.get("SUPABASE_URL")
+key = os.environ.get("SUPABASE_KEY")
+supabase: Client = create_client(url, key)
+
+@app.get("/")
+async def root():
+    return {"status": "Online", "service": "East Coast E-Bike API", "database": "Connected"}
+
+# This will handle your automated shipping logic later
+@app.post("/add-shipping")
+async def add_shipping(tracking: str, carrier: str):
+    data = {"tracking_number": tracking, "carrier": carrier}
+    response = supabase.table("shipping_logs").insert(data).execute()
+    return {"message": "Shipping record saved!", "data": response.data}
+
+# This will be where we trigger those cool AI visuals
+@app.post("/generate-art")
+async def generate_art(prompt: str):
+    # We will plug the AI generation code here next!
+    return {"message": f"Ready to generate visual for: {prompt}"}
     
