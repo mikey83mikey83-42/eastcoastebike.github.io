@@ -103,3 +103,13 @@ async def complete_repair(claim_id: str, tracking: str):
         "tracking_status": "Live"
     }
     
+import requests
+
+HF_TOKEN = os.environ.get("HF_TOKEN")
+API_URL = "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-schnell"
+
+def generate_free_image(prompt_text):
+    headers = {"Authorization": f"Bearer {HF_TOKEN}"}
+    response = requests.post(API_URL, headers=headers, json={"inputs": prompt_text})
+    # This returns the raw image data to save to Supabase
+    return response.content 
