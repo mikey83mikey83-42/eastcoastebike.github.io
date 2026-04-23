@@ -4,3 +4,5 @@ supabase>=2.10.0
 python-multipart>=0.0.9
 python-dotenv>=1.0.1
 gunicorn>=23.0.0
+requests
+python-dotenv
