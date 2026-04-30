@@ -1,0 +1,19 @@
+-- Adds Bafang specs and claims logic
+CREATE TABLE IF NOT EXISTS public.manufacturer_specs (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    brand TEXT NOT NULL,
+    error_code INTEGER,
+    fix_advice TEXT,
+    created_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- Seed Bafang Data
+INSERT INTO public.manufacturer_specs (brand, error_code, fix_advice)
+VALUES 
+    ('Bafang', 21, 'Check speed sensor magnet alignment.'),
+    ('Bafang', 08, 'Hall sensor fault. Test 5V rail on controller.');
+
+-- Update Claims table for Partner/Warranty logic
+ALTER TABLE public.claims 
+ADD COLUMN IF NOT EXISTS claim_source TEXT DEFAULT 'retail',
+ADD COLUMN IF NOT EXISTS reimbursement_status BOOLEAN DEFAULT FALSE;
