@@ -1,16 +1,24 @@
-services:
-  - type: web
-    name: east-coast-ebike-api
-    runtime: python
-    plan: starter
-    region: ohio # Keeps it local to your Alliance operations
-    buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn main:app -k uvicorn.workers.UvicornWorker
-    envVars:
-      - key: PYTHON_VERSION
-        value: 3.14.3
-      - key: SUPABASE_URL
-        sync: false # Set this in the Render Dashboard for security
-      - key: SUPABASE_KEY
-        sync: false # Set this in the Render Dashboard for security
-        
+name: CI/CD Pipeline
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # 1. Update Database (Supabase)
+      - name: Update Supabase Schema
+        uses: supabase/setup-cli@v1
+      - run: supabase db push
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+
+      # 2. Trigger Render Deployment
+      - name: Deploy to Render
+        env:
+          deploy_url: ${{ secrets.RENDER_DEPLOY_HOOK }}
+        run: curl "$deploy_url"
