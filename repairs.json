@@ -1,1 +1,42 @@
-[]
+{
+  "manufacturer": "Bafang",
+  "service_center": "East Coast E-Bike Warranty Claims Repair Center LLC",
+  "location": "Alliance, Ohio",
+  "diagnostics": [
+    {
+      "error_code": 7,
+      "description": "High Voltage Protection",
+      "action": "Check battery voltage compatibility. Ensure the controller logic matches the battery pack output."
+    },
+    {
+      "error_code": 8,
+      "description": "Hall Sensor Abnormality",
+      "action": "Test the 5V rail on the controller. Check internal motor Hall sensor alignment and phase wire soldering."
+    },
+    {
+      "error_code": 10,
+      "description": "Controller Overheat",
+      "action": "Inspect thermal paste and MOSFET mounting. Check for phase shorts causing high resistance."
+    },
+    {
+      "error_code": 12,
+      "description": "Current Sensor Abnormality",
+      "action": "Board-level diagnostic required: Check the shunt resistors and current sensing circuit on the controller."
+    },
+    {
+      "error_code": 21,
+      "description": "Speed Sensor Abnormality",
+      "action": "Verify magnet placement on the spokes. Inspect the sensor-to-controller connector for pins backing out."
+    },
+    {
+      "error_code": 30,
+      "description": "Communication Abnormality",
+      "action": "Logic failure: Check green Higo connector pins. Test for 5V at the display lead to verify controller communication."
+    }
+  ],
+  "common_parts_inventory": [
+    {"part_id": "BF-HALL-01", "name": "Bafang Hall Sensor PCBA", "type": "Logic"},
+    {"part_id": "BF-CONT-48V", "name": "Bafang 48V Sine Wave Controller", "type": "Controller"},
+    {"part_id": "BF-GEAR-NYL", "name": "Bafang Internal Nylon Reduction Gear", "type": "Mechanical"}
+  ]
+}
