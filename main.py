@@ -1,52 +1,44 @@
 import os
-import base64
-import json
-import requests
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
+from supabase import create_client, Client
+from dotenv import load_dotenv
 
-app = FastAPI()
+load_dotenv()
 
-# --- CONFIGURATION (Set these in Render Env Vars) ---
-GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN")
-HF_TOKEN = os.environ.get("HF_TOKEN")
-REPO_NAME = "mikey83mikey83-42/eastcoastebike.github.io" 
-DB_FILE = "repairs.json"
+app = FastAPI(title="East Coast E-Bike Warranty Hub")
 
-# --- HELPERS ---
-def save_to_github(new_data):
-    url = f"https://api.github.com/repos/{REPO_NAME}/contents/{DB_FILE}"
-    headers = {"Authorization": f"token {GITHUB_TOKEN}"}
-    
-    # Get the file to find the 'sha' and current content
-    r = requests.get(url, headers=headers).json()
-    sha = r['sha']
-    content = json.loads(base64.b64decode(r['content']))
-    
-    content.append(new_data)
-    
-    # Push update
-    updated_b64 = base64.b64encode(json.dumps(content, indent=4).encode()).decode()
-    payload = {"message": "Automated log update", "content": updated_b64, "sha": sha}
-    requests.put(url, headers=headers, json=payload)
+# Supabase Setup
+url: str = os.environ.get("SUPABASE_URL")
+key: str = os.environ.get("SUPABASE_KEY")
+supabase: Client = create_client(url, key)
 
-# --- ROUTES ---
 @app.get("/")
 async def root():
-    return {"status": "Online", "service": "East Coast E-Bike API", "database": "GitHub-Linked"}
+    return {"status": "East Coast Hub is Live", "service": "Bafang Regional Hub"}
 
-@app.post("/log-repair")
-async def log_repair(customer: str, motor: str, tracking: str):
-    # 1. Prepare data entry
-    entry = {
-        "customer": customer,
-        "motor": motor,
-        "tracking": tracking,
-        "status": "Shipped",
-        "timestamp": "2026-04-23"
+# Bo's AI Diagnostic Helper
+@app.get("/bo/diagnose/{error_code}")
+async def get_diagnostic(error_code: int):
+    # Pulls the tech data we inserted via the migration
+    response = supabase.table("manufacturer_specs") \
+        .select("fix_advice") \
+        .eq("error_code", error_code) \
+        .eq("brand", "Bafang") \
+        .execute()
+    
+    if not response.data:
+        raise HTTPException(status_code=404, detail="Error code not found in Bafang manual.")
+    
+    return {
+        "bo_says": response.data[0]['fix_advice'],
+        "technical_source": "Bafang Dealer Manual"
     }
+
+# Claim Submission (B2B Partner Logic)
+@app.post("/claims/submit")
+async def submit_claim(claim_data: dict):
+    # Logic to flag if it's from a partner shop or retail
+    claim_data["claim_source"] = claim_data.get("claim_source", "retail")
     
-    # 2. Save to GitHub automatically
-    save_to_github(entry)
-    
-    return {"message": f"Ol' boy, {customer}'s repair is logged and live!"}
-    
+    response = supabase.table("claims").insert(claim_data).execute()
+    return {"status": "Claim logged", "data": response.data}
