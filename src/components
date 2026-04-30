@@ -1,0 +1,60 @@
+import React, { useState } from 'react';
+
+const DiagnosticTool = () => {
+  const [errorCode, setErrorCode] = useState('');
+  const [result, setResult] = useState(null);
+  const [isPartner, setIsPartner] = useState(false);
+
+  const handleDiagnose = async () => {
+    try {
+      const response = await fetch(`https://east-coast-ebike-warranty.onrender.com/bo/diagnose/${errorCode}`);
+      const data = await response.json();
+      setResult(data);
+    } catch (err) {
+      setResult({ bo_says: "Connection error. Is the backend live, Mike?" });
+    }
+  };
+
+  return (
+    <div className="p-6 max-w-md mx-auto bg-slate-900 text-white rounded-xl shadow-md border border-blue-500">
+      <h2 className="text-xl font-bold mb-4 text-blue-400">East Coast Hub: Live Diagnostics</h2>
+      
+      <div className="mb-4">
+        <label className="block text-sm mb-1">Enter Bafang Error Code:</label>
+        <input 
+          type="number" 
+          value={errorCode}
+          onChange={(e) => setErrorCode(e.target.value)}
+          className="w-full p-2 bg-slate-800 border border-slate-700 rounded text-green-400 font-mono"
+          placeholder="e.g. 21"
+        />
+      </div>
+
+      <button 
+        onClick={handleDiagnose}
+        className="w-full bg-blue-600 hover:bg-blue-700 p-2 rounded font-bold transition"
+      >
+        Ask Bo for Advice
+      </button>
+
+      {result && (
+        <div className="mt-6 p-4 bg-slate-800 rounded border-l-4 border-green-500">
+          <p className="text-xs text-slate-400 uppercase tracking-widest">Bo's Analysis:</p>
+          <p className="mt-2 text-lg">{result.bo_says}</p>
+        </div>
+      )}
+
+      <div className="mt-4 flex items-center justify-between text-xs text-slate-500">
+        <span>Partner Portal Mode:</span>
+        <button 
+          onClick={() => setIsPartner(!isPartner)}
+          className={`px-2 py-1 rounded ${isPartner ? 'bg-green-900 text-green-300' : 'bg-slate-700'}`}
+        >
+          {isPartner ? 'ACTIVE (B2B)' : 'OFF (Retail)'}
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default DiagnosticTool;
