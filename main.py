@@ -95,4 +95,5 @@ async def get_parts():
         result = supabase.table("inventory").select("*").eq("category", "Bafang").execute()
         return {"inventory": result.data}
     except Exception as e:
-        return {"error": "Could
+        return {"error": "Could n't inventory:"}
+        
