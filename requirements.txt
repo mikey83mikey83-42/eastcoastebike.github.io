@@ -3,3 +3,4 @@ uvicorn
 supabase
 python-dotenv
 httpx
+supabase
