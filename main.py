@@ -45,7 +45,7 @@ async def health_check():
 
 @app.get("/bo/diagnose/{error_code}")
 async def get_bo_advice(error_code: int):
-    ""'
+    """
     Fetches technical fix advice from the Bafang Dealer Manual data
     stored in the manufacturer_specs table.
     """
