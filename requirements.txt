@@ -3,5 +3,5 @@ uvicorn
 supabase
 python-dotenv
 httpx
-squareup
+squareup==44.1
 shippo
