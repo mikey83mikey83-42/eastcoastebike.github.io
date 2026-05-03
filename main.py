@@ -1,49 +1,16 @@
 from fastapi import FastAPI
-from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+import os
 
 app = FastAPI()
 
-# This is what people will see when they visit your URL
-@app.get("/", response_class=HTMLResponse)
-async def home():
-    return """
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>East Coast Ebike Warranty</title>
-        <style>
-            body { 
-                font-family: sans-serif; 
-                display: flex; 
-                flex-direction: column; 
-                align-items: center; 
-                justify-content: center; 
-                height: 100vh; 
-                margin: 0;
-                background-color: #f4f4f4;
-            }
-            .container {
-                text-align: center;
-                padding: 2rem;
-                background: white;
-                border-radius: 8px;
-                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            }
-            h1 { color: #333; }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <h1>East Coast Ebike Warranty</h1>
-            <p>Your site is officially live and serving HTML!</p>
-        </div>
-    </body>
-    </html>
-    """
+# This links your 'src' folder so CSS/JS files can be found
+# Make sure your folder is actually named 'src' in GitHub
+app.mount("/src", StaticFiles(directory="src"), name="src")
 
-# Keeps the deployment healthy
-@app.get("/health")
-async def health_check():
-    return {"status": "ok"}
+@app.get("/")
+async def read_index():
+    # This sends the index.html file to the browser
+    return FileResponse(os.path.join("src", "index.html"))
+    
