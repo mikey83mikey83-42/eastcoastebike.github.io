@@ -3,185 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>East Coast E-Bike | Authorized Bafang Warranty & Parts</title>
+    <title>East Coast E-Bike | Authorized Bafang Warranty Hub</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+        .hero-gradient { background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%); }
+    </style>
 </head>
-<body class="bg-slate-50 font-sans text-slate-900">
+<body class="bg-slate-50 text-slate-900 font-sans">
 
-    <nav class="bg-slate-900 text-white p-4 sticky top-0 z-50 shadow-xl border-b border-blue-500">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="flex items-center space-x-2">
-                <i class="fa fa-bolt text-blue-400 text-2xl"></i>
-                <h1 class="text-xl font-black tracking-tighter">EAST COAST <span class="text-blue-400">E-BIKE</span></h1>
+    <nav class="sticky top-0 z-50 glass border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="bg-blue-600 p-2 rounded-lg text-white">
+                    <i class="fa fa-bolt text-xl"></i>
+                </div>
+                <span class="text-2xl font-black tracking-tighter text-slate-900 uppercase">East Coast <span class="text-blue-600">E-Bike</span></span>
             </div>
-            <div class="space-x-8 hidden md:flex items-center text-sm font-bold uppercase tracking-widest">
-                <a href="#inventory" class="hover:text-blue-400 transition">Inventory</a>
-                <a href="#diagnostics" class="hover:text-blue-400 transition">BESST Pro</a>
-                <a href="mailto:contact@eastcoastebike.com" class="bg-blue-600 px-5 py-2 rounded-full hover:bg-blue-500 transition shadow-lg shadow-blue-900/50">File Claim</a>
+            <div class="hidden md:flex space-x-8 text-sm font-bold uppercase tracking-widest text-slate-600">
+                <a href="#inventory" class="hover:text-blue-600 transition">Inventory</a>
+                <a href="#diagnostics" class="hover:text-blue-600 transition">Diagnostics</a>
+                <a href="mailto:support@eastcoastebike.com" class="bg-slate-900 text-white px-6 py-2 rounded-full hover:bg-blue-600 transition">File Claim</a>
             </div>
         </div>
     </nav>
 
-    <header class="relative bg-slate-900 text-white py-24 px-4 overflow-hidden">
-        <div class="absolute inset-0 opacity-20">
-            <div class="absolute inset-0 bg-gradient-to-r from-blue-900 to-transparent"></div>
-        </div>
-        <div class="relative max-w-5xl mx-auto text-center">
-            <span class="bg-blue-500/20 text-blue-300 text-xs font-black px-4 py-1 rounded-full uppercase tracking-widest border border-blue-500/30">Ohio Regional Service Center</span>
-            <h2 class="text-6xl font-black mb-6 mt-4 leading-tight">THE BAFANG <span class="text-blue-500">AXLE</span> HUB</h2>
-            <p class="text-xl mb-10 text-slate-300 max-w-2xl mx-auto font-light">Direct technical support, warranty fulfillment, and board-level diagnostics for the entire 2026/2027 Bafang ecosystem.</p>
-            <div class="flex flex-wrap justify-center gap-4">
-                <a href="#inventory" class="bg-blue-600 text-white px-10 py-4 rounded-xl font-bold shadow-2xl hover:bg-blue-500 transition-all transform hover:-translate-y-1">Identify My System</a>
-                <a href="#diagnostics" class="bg-slate-800 text-white px-10 py-4 rounded-xl font-bold border border-slate-700 hover:bg-slate-700 transition-all">Technical Specs</a>
+    <header class="hero-gradient text-white py-24 px-6 relative overflow-hidden">
+        <div class="max-w-5xl mx-auto relative z-10">
+            <span class="inline-block bg-blue-500/20 text-blue-300 border border-blue-500/30 px-4 py-1 rounded-full text-xs font-bold uppercase mb-6">Regional Warranty Claims Repair Center</span>
+            <h1 class="text-6xl md:text-7xl font-black mb-8 leading-tight">The Bafang <br><span class="text-blue-400">Axle Hub</span></h1>
+            <p class="text-xl text-slate-300 max-w-2xl mb-12 font-light leading-relaxed">Authorized technical support for 2026/2027 drive systems. Specializing in board-level diagnostics, motor teardowns, and firmware synchronization.</p>
+            <div class="flex flex-wrap gap-4">
+                <a href="#inventory" class="bg-blue-600 hover:bg-blue-500 px-10 py-4 rounded-xl font-bold text-lg transition-all transform hover:-translate-y-1 shadow-2xl shadow-blue-600/20">Explore Inventory</a>
+                <a href="#diagnostics" class="bg-white/10 hover:bg-white/20 border border-white/20 px-10 py-4 rounded-xl font-bold text-lg transition">System Specs</a>
             </div>
         </div>
+        <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(#3b82f6 1px, transparent 1px); background-size: 40px 40px;"></div>
     </header>
 
-    <main id="inventory" class="max-w-7xl mx-auto py-16 px-4">
-        <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
-            <div>
-                <h3 class="text-4xl font-black text-slate-900">2027 OEM Workbook Inventory</h3>
-                <p class="text-slate-500 mt-2 font-medium">Verify your Model Number and Internal Code for accurate warranty processing.</p>
+    <section id="inventory" class="py-20 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-16">
+                <h2 class="text-4xl font-black text-slate-900 mb-4">Official 2027 Inventory</h2>
+                <div class="h-1.5 w-24 bg-blue-600 rounded-full"></div>
             </div>
-            <div class="bg-blue-50 p-2 rounded-lg border border-blue-100">
-                <span class="text-blue-700 text-sm font-bold px-3">Total Systems: 24 Authorized</span>
-            </div>
-        </div>
-        
-        <div class="mb-16">
-            <h4 class="text-xl font-bold mb-6 text-blue-900 flex items-center gap-2">
-                <i class="fa fa-gears"></i> Mid-Drive Systems (M-Series)
-            </h4>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:border-blue-500 transition-all group">
-                    <h5 class="text-2xl font-black group-hover:text-blue-600 transition">M620 Ultra</h5>
-                    <p class="font-mono text-xs text-slate-400 mb-4 uppercase">Internal: MM G510.1000.C</p>
-                    <div class="space-y-2 text-sm border-t pt-4">
-                        <div class="flex justify-between"><span class="text-slate-500">Peak Power</span><span class="font-bold">1000W - 1500W</span></div>
-                        <div class="flex justify-between"><span class="text-slate-500">Max Torque</span><span class="font-bold text-blue-600">160Nm</span></div>
-                        <div class="flex justify-between"><span class="text-slate-500">Communication</span><span class="font-bold">UART / CAN</span></div>
-                    </div>
-                </div>
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:border-blue-500 transition-all group">
-                    <h5 class="text-2xl font-black group-hover:text-blue-600 transition">M560 Mag</h5>
-                    <p class="font-mono text-xs text-slate-400 mb-4 uppercase">Internal: MM G5300.750.C</p>
-                    <div class="space-y-2 text-sm border-t pt-4">
-                        <div class="flex justify-between"><span class="text-slate-500">Peak Power</span><span class="font-bold">750W</span></div>
-                        <div class="flex justify-between"><span class="text-slate-500">Max Torque</span><span class="font-bold text-blue-600">140Nm</span></div>
-                        <div class="flex justify-between"><span class="text-slate-500">Housing</span><span class="font-bold">Magnesium</span></div>
-                    </div>
-                </div>
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:border-blue-500 transition-all group">
-                    <h5 class="text-2xl font-black group-hover:text-blue-600 transition">M510 eMTB</h5>
-                    <p class="font-mono text-xs text-slate-400 mb-4 uppercase">Internal: MM G522.250.C</p>
-                    <div class="space-y-2 text-sm border-t pt-4">
-                        <div class="flex justify-between"><span class="text-slate-500">Peak Power</span><span class="font-bold">250W</span></div>
-                        <div class="flex justify-between"><span class="text-slate-500">Max Torque</span><span class="font-bold text-blue-600">95Nm</span></div>
-                        <div class="flex justify-between"><span class="text-slate-500">Weight</span><span class="font-bold">2.9kg</span></div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <div class="mb-16">
-            <h4 class="text-xl font-bold mb-6 text-blue-900 flex items-center gap-2">
-                <i class="fa fa-circle-notch"></i> Hub Motor Systems (H-Series)
-            </h4>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="bg-slate-100 p-5 rounded-xl border border-slate-200">
-                    <h6 class="font-bold">H550 Fat Bike</h6>
-                    <p class="text-[10px] font-mono text-slate-500">RM G062.750.DC</p>
-                    <div class="mt-3 text-xs">750W | 100Nm | Disc Brake</div>
+            <h3 class="text-2xl font-bold text-slate-800 mb-8 flex items-center gap-3">
+                <i class="fa fa-cogs text-blue-600"></i> Mid-Drive Performance (M-Series)
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+                <div class="bg-white rounded-3xl p-8 border border-slate-200 hover:shadow-2xl transition group">
+                    <h4 class="text-2xl font-black mb-1 group-hover:text-blue-600 transition">M620 Ultra</h4>
+                    <p class="font-mono text-[11px] text-slate-400 mb-6 tracking-tighter">MODEL: MM G510.1000.C</p>
+                    <ul class="space-y-3 text-sm">
+                        <li class="flex justify-between border-b border-slate-100 pb-2"><span>Peak Torque</span><strong>160Nm</strong></li>
+                        <li class="flex justify-between border-b border-slate-100 pb-2"><span>Rated Power</span><strong>1000W</strong></li>
+                        <li class="flex justify-between border-b border-slate-100 pb-2"><span>Sensors</span><strong>Triple (Torque/Speed)</strong></li>
+                    </ul>
+                    <button class="w-full mt-8 bg-slate-50 text-slate-900 py-3 rounded-xl font-bold border border-slate-200 hover:bg-blue-600 hover:text-white transition">Identify Part</button>
                 </div>
-                <div class="bg-slate-100 p-5 rounded-xl border border-slate-200">
-                    <h6 class="font-bold">H700 Dual Speed</h6>
-                    <p class="text-[10px] font-mono text-slate-500">RM G040.250.DC</p>
-                    <div class="mt-3 text-xs">Automatic 2-Speed Gear</div>
+                <div class="bg-white rounded-3xl p-8 border border-slate-200 hover:shadow-2xl transition group">
+                    <h4 class="text-2xl font-black mb-1 group-hover:text-blue-600 transition">M560 Mag</h4>
+                    <p class="font-mono text-[11px] text-slate-400 mb-6 tracking-tighter">MODEL: MM G5300.750.C</p>
+                    <ul class="space-y-3 text-sm">
+                        <li class="flex justify-between border-b border-slate-100 pb-2"><span>Peak Torque</span><strong>140Nm</strong></li>
+                        <li class="flex justify-between border-b border-slate-100 pb-2"><span>Weight</span><strong>3.3kg</strong></li>
+                        <li class="flex justify-between border-b border-slate-100 pb-2"><span>Material</span><strong>Magnesium Housing</strong></li>
+                    </ul>
+                    <button class="w-full mt-8 bg-slate-50 text-slate-900 py-3 rounded-xl font-bold border border-slate-200 hover:bg-blue-600 hover:text-white transition">Identify Part</button>
                 </div>
-                <div class="bg-slate-100 p-5 rounded-xl border border-slate-200">
-                    <h6 class="font-bold">H400 Front Hub</h6>
-                    <p class="text-[10px] font-mono text-slate-500">FM G312.250.D</p>
-                    <div class="mt-3 text-xs">250W | 50Nm | IP X5</div>
-                </div>
-                <div class="bg-slate-100 p-5 rounded-xl border border-slate-200">
-                    <h6 class="font-bold">H305 Commuter</h6>
-                    <p class="text-[10px] font-mono text-slate-500">RM G0100.250.D</p>
-                    <div class="mt-3 text-xs">250W | 55Nm | Lightweight</div>
+                <div class="bg-white rounded-3xl p-8 border border-slate-200 hover:shadow-2xl transition group">
+                    <h4 class="text-2xl font-black mb-1 group-hover:text-blue-600 transition">M510 eMTB</h4>
+                    <p class="font-mono text-[11px] text-slate-400 mb-6 tracking-tighter">MODEL: MM G522.250.C</p>
+                    <ul class="space-y-3 text-sm">
+                        <li class="flex justify-between border-b border-slate-100 pb-2"><span>Peak Torque</span><strong>95Nm</strong></li>
+                        <li class="flex justify-between border-b border-slate-100 pb-2"><span>Power</span><strong>250W</strong></li>
+                        <li class="flex justify-between border-b border-slate-100 pb-2"><span>Target</span><strong>Off-Road Performance</strong></li>
+                    </ul>
+                    <button class="w-full mt-8 bg-slate-50 text-slate-900 py-3 rounded-xl font-bold border border-slate-200 hover:bg-blue-600 hover:text-white transition">Identify Part</button>
                 </div>
             </div>
-        </div>
 
-        <div class="mb-16">
-            <h4 class="text-xl font-bold mb-6 text-blue-900 flex items-center gap-2">
-                <i class="fa fa-microchip"></i> HMI, Battery & Control
-            </h4>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-blue-900 text-white p-8 rounded-3xl shadow-2xl relative overflow-hidden group">
-                    <i class="fa fa-tablet-screen-button absolute -right-4 -bottom-4 text-white/10 text-9xl transform -rotate-12 group-hover:scale-110 transition"></i>
-                    <span class="bg-blue-400 text-blue-900 text-[10px] font-black px-2 py-1 rounded">DISPLAY UNIT</span>
-                    <h5 class="text-2xl font-bold mt-4">DP C010.CN</h5>
-                    <p class="text-blue-300 text-sm mt-1">4.0" Color TFT / Bluetooth 5.0</p>
-                    <p class="text-xs mt-6 text-blue-200/70 leading-relaxed font-light">Protocol: CAN-bus<br>App: Bafang Go Compatible<br>Rating: IP X7</p>
-                </div>
-                <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm">
-                    <span class="bg-emerald-100 text-emerald-800 text-[10px] font-black px-2 py-1 rounded">ENERGY STORAGE</span>
-                    <h5 class="text-2xl font-bold mt-4">BT F161.B748.C</h5>
-                    <p class="text-slate-500 text-sm mt-1">748Wh Intube High-Capacity</p>
-                    <div class="mt-6 flex items-center gap-4">
-                        <div class="h-2 w-full bg-slate-100 rounded-full overflow-hidden"><div class="h-full w-4/5 bg-emerald-500"></div></div>
-                        <span class="text-xs font-bold">48V</span>
+            <h3 class="text-2xl font-bold text-slate-800 mb-8 flex items-center gap-3">
+                <i class="fa fa-microchip text-blue-600"></i> GVT & Shifting (Transmission)
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
+                <div class="bg-slate-900 text-white p-10 rounded-3xl relative overflow-hidden">
+                    <div class="relative z-10">
+                        <span class="text-blue-400 text-xs font-black uppercase tracking-widest">2027 Flagship Tech</span>
+                        <h4 class="text-3xl font-black mt-4 mb-2">RG E510.D Auto Gear</h4>
+                        <p class="text-slate-400 font-light mb-8">5-speed electronic gear hub with Gear Variable Transmission technology.</p>
+                        <ul class="grid grid-cols-2 gap-4 text-xs font-bold uppercase">
+                            <li class="bg-white/5 p-3 rounded-lg border border-white/10">300+ Auto Shifts/20km</li>
+                            <li class="bg-white/5 p-3 rounded-lg border border-white/10">Weather Resistant</li>
+                        </ul>
                     </div>
+                    <i class="fa fa-shield-halved absolute -right-8 -bottom-8 text-white/5 text-[200px]"></i>
                 </div>
-                <div class="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm">
-                    <span class="bg-purple-100 text-purple-800 text-[10px] font-black px-2 py-1 rounded">GVT TECHNOLOGY</span>
-                    <h5 class="text-2xl font-bold mt-4">RG E510.D</h5>
-                    <p class="text-slate-500 text-sm mt-1">5-Speed Auto Gear Hub</p>
-                    <p class="text-xs mt-6 text-slate-400 font-mono">PN: RG E510.D.AS</p>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <section id="diagnostics" class="bg-slate-900 text-white py-20 border-t-4 border-blue-600">
-        <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-16 items-center">
-            <div>
-                <h3 class="text-4xl font-black mb-6">BESST Pro <span class="text-blue-400">Diagnostic Integration</span></h3>
-                <p class="text-slate-400 mb-8 leading-relaxed">We utilize the authorized Bafang E-Mobility Sales & Service Tool (BESST Pro) for precision maintenance. Our workshop can handle high-level firmware updates, parameter adjustments, and full system analysis reports.</p>
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="flex items-center gap-3 bg-slate-800/50 p-4 rounded-lg border border-slate-700">
-                        <i class="fa fa-check-circle text-blue-400"></i>
-                        <span class="text-sm font-bold">Fault Analysis</span>
-                    </div>
-                    <div class="flex items-center gap-3 bg-slate-800/50 p-4 rounded-lg border border-slate-700">
-                        <i class="fa fa-check-circle text-blue-400"></i>
-                        <span class="text-sm font-bold">Firmware Flashing</span>
-                    </div>
-                </div>
-            </div>
-            <div class="bg-blue-600/10 p-1 rounded-3xl border border-blue-500/20">
-                <div class="bg-slate-800 p-10 rounded-2xl text-center">
-                    <i class="fa fa-microchip text-6xl text-blue-500 mb-6"></i>
-                    <h4 class="text-2xl font-bold mb-2">UART & CAN Protocol</h4>
-                    <p class="text-slate-400 text-sm font-light uppercase tracking-widest">Authorized Board-Level Repair</p>
+                <div class="bg-white p-10 rounded-3xl border border-slate-200 shadow-sm flex flex-col justify-center">
+                    <h4 class="text-2xl font-black mb-4">H700 Dual Speed</h4>
+                    <p class="text-slate-500 text-sm mb-6">Innovative rear hub with automatic 2-speed shifting based on real-time bicycle speed.</p>
+                    <p class="font-mono text-xs text-blue-600">SYSTEM CODE: RM G040.250.DC</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer class="bg-white py-12 px-4 border-t border-slate-200">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8 text-center md:text-left">
+    <section id="diagnostics" class="bg-slate-900 text-white py-24 px-6 border-t-8 border-blue-600">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-20 items-center">
             <div>
-                <h2 class="text-xl font-black tracking-tighter">EAST COAST <span class="text-blue-600">E-BIKE</span></h2>
-                <p class="text-slate-400 text-xs mt-1 uppercase font-bold tracking-widest">Warranty Repair Hub</p>
+                <h2 class="text-5xl font-black mb-8 leading-tight">BESST Pro <br><span class="text-blue-400">Interface Suite</span></h2>
+                <p class="text-slate-400 text-lg mb-10 font-light leading-relaxed">As an authorized service center, we utilize the Bafang E-Mobility Sales & Service Tool for comprehensive system health checks.</p>
+                <div class="space-y-6">
+                    <div class="flex items-start gap-4">
+                        <div class="bg-blue-600/20 p-3 rounded-lg text-blue-400"><i class="fa fa-sync-alt"></i></div>
+                        <div>
+                            <h5 class="font-bold">Firmware Flashing</h5>
+                            <p class="text-sm text-slate-500">Update M560, M620, and M820 controllers to the latest protocol versions.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <div class="bg-blue-600/20 p-3 rounded-lg text-blue-400"><i class="fa fa-file-invoice"></i></div>
+                        <div>
+                            <h5 class="font-bold">Diagnostic Reporting</h5>
+                            <p class="text-sm text-slate-500">Full fault code history and parameter adjustment for torque sensors.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="text-slate-400 text-sm space-y-1">
+            <div class="relative">
+                <div class="bg-blue-600 absolute -inset-4 rounded-full blur-3xl opacity-20"></div>
+                <div class="relative bg-slate-800 p-12 rounded-3xl border border-slate-700 text-center shadow-2xl">
+                    <i class="fa fa-microchip text-7xl text-blue-500 mb-8"></i>
+                    <h4 class="text-3xl font-black mb-4 uppercase tracking-tighter">CAN-BUS & UART</h4>
+                    <p class="text-slate-400 text-sm font-mono">AUTHORIZED PROTOCOL ACCESS</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-white py-20 px-6 border-t border-slate-200">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-12">
+            <div class="text-center md:text-left">
+                <span class="text-3xl font-black tracking-tighter text-slate-900 uppercase">East Coast <span class="text-blue-600">E-Bike</span></span>
+                <p class="text-slate-400 text-xs mt-2 font-bold uppercase tracking-widest">Authorized Warranty Hub</p>
+            </div>
+            <div class="text-slate-400 text-sm text-center md:text-right font-medium">
                 <p>&copy; 2026 East Coast E-Bike Warranty Claims Repair Center LLC.</p>
-                <p>Alliance, Ohio | Certified Bafang Technical Support Specialists</p>
-            </div>
-            <div class="flex gap-4">
-                <a href="#" class="text-slate-400 hover:text-blue-600 transition"><i class="fa-brands fa-github text-xl"></i></a>
-                <a href="#" class="text-slate-400 hover:text-blue-600 transition"><i class="fa-solid fa-envelope text-xl"></i></a>
+                <p class="mt-1">Alliance, Ohio | Specialists in Bafang Drive Engineering</p>
             </div>
         </div>
     </footer>
