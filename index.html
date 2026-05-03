@@ -3,119 +3,179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>East Coast E-Bike | Tech Hub</title>
+    <title>East Coast E-Bike | Warranty & Parts Hub</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body class="bg-slate-900 text-white font-sans selection:bg-cyan-500">
+<body class="bg-gray-50 font-sans text-gray-900">
 
-    <nav class="p-6 border-b border-cyan-500/20 flex justify-between items-center bg-slate-900/50 backdrop-blur-md sticky top-0 z-50">
-        <div>
-            <h1 class="text-2xl font-black tracking-tighter text-cyan-400">EAST COAST E-BIKE</h1>
-            <p class="text-[10px] uppercase tracking-[0.2em] text-slate-500">Warranty Claims & Repair Center</p>
-        </div>
-        <div class="flex items-center gap-4">
-            <span class="hidden md:inline text-xs text-slate-400 font-mono">STATION: ALLIANCE_OH</span>
-            <div class="h-2 w-2 rounded-full bg-green-500 animate-pulse"></div>
+    <nav class="bg-blue-900 text-white p-4 sticky top-0 z-50 shadow-lg">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold tracking-tight">EAST COAST <span class="text-blue-400">E-BIKE</span></h1>
+            <div class="space-x-6 hidden md:flex">
+                <a href="#inventory" class="hover:text-blue-300">Parts Catalog</a>
+                <a href="#services" class="hover:text-blue-300">Services</a>
+                <a href="#" class="bg-blue-600 px-4 py-2 rounded-lg hover:bg-blue-500 transition">File a Claim</a>
+            </div>
         </div>
     </nav>
 
-    <main class="max-w-5xl mx-auto p-6 md:p-12">
-        <header class="mb-12">
-            <h2 class="text-5xl font-extrabold mb-4 bg-gradient-to-r from-white to-slate-500 bg-clip-text text-transparent">Diagnostic Portal</h2>
-            <p class="text-slate-400 max-w-xl">Plug in your Bafang programming cable to begin real-time system analysis and firmware verification.</p>
-        </header>
+    <header class="bg-blue-800 text-white py-20 px-4 border-b-4 border-blue-400">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-5xl font-extrabold mb-4">Authorized Service & Warranty Hub</h2>
+            <p class="text-xl mb-8 text-blue-100">Regional Warranty Claims Repair Center specializing in Bafang Drive Systems.</p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#inventory" class="bg-white text-blue-900 px-8 py-3 rounded-full font-bold shadow-lg hover:bg-gray-100">Browse Inventory</a>
+                <a href="#" class="bg-blue-500 text-white px-8 py-3 rounded-full font-bold shadow-lg hover:bg-blue-400">System Diagnostics</a>
+            </div>
+        </div>
+    </header>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <section class="py-8 bg-white border-b">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="relative max-w-xl mx-auto">
+                <input type="text" placeholder="Search by Model (e.g. M620) or Part Number..." class="w-full pl-12 pr-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 outline-none">
+                <i class="fa fa-search absolute left-4 top-4 text-gray-400"></i>
+            </div>
+        </div>
+    </section>
+
+    <main id="inventory" class="max-w-7xl mx-auto py-12 px-4">
+        <h3 class="text-3xl font-bold mb-8 text-gray-800 border-l-8 border-blue-600 pl-4">2026/2027 Parts Inventory</h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             
-            <div class="lg:col-span-1 bg-slate-800/50 p-8 rounded-3xl border border-slate-700 hover:border-cyan-500/50 transition-all duration-500 shadow-2xl">
-                <div class="mb-6">
-                    <div class="h-12 w-12 bg-cyan-500/10 rounded-xl flex items-center justify-center mb-4">
-                        <svg class="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                    </div>
-                    <h3 class="text-xl font-bold">System Interface</h3>
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-xl transition duration-300">
+                <div class="bg-gray-200 h-48 flex items-center justify-center text-gray-400">
+                    <i class="fa fa-engine-warning fa-4x"></i>
                 </div>
-                
-                <button id="connectBtn" class="w-full bg-cyan-600 hover:bg-cyan-500 text-white py-4 rounded-2xl font-black transition-all transform active:scale-95 shadow-lg shadow-cyan-900/20">
-                    CONNECT BIKE
-                </button>
-                
-                <div class="mt-6 p-4 bg-slate-900/50 rounded-xl border border-slate-700/50">
-                    <p id="status" class="text-xs font-mono text-slate-500 text-center uppercase tracking-widest">Waiting for USB...</p>
+                <div class="p-6">
+                    <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2.5 py-0.5 rounded">MID-DRIVE</span>
+                    <h4 class="text-xl font-bold mt-2">M620 (Ultra Motor)</h4>
+                    <p class="text-sm text-gray-500 mb-4 font-mono">PN: MM G510.1000.C</p>
+                    <div class="space-y-2 text-sm text-gray-600 mb-6">
+                        <div class="flex justify-between"><span>Power:</span><strong>1000W</strong></div>
+                        <div class="flex justify-between"><span>Torque:</span><strong>160Nm</strong></div>
+                        <div class="flex justify-between"><span>Weight:</span><strong>6.7kg</strong></div>
+                    </div>
+                    <button class="w-full bg-blue-900 text-white py-2 rounded-lg font-semibold hover:bg-blue-800">Identify Part</button>
                 </div>
             </div>
 
-            <div class="lg:col-span-2 bg-slate-800/50 p-8 rounded-3xl border border-slate-700">
-                <h3 class="text-xl font-bold mb-8 flex items-center gap-2">
-                    <span class="h-2 w-2 bg-cyan-400 rounded-full"></span>
-                    Live Telemetry
-                </h3>
-                
-                <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
-                    <div class="p-4 bg-slate-900/30 rounded-2xl border border-slate-700/30">
-                        <p class="text-[10px] text-slate-500 uppercase font-bold mb-1">Voltage</p>
-                        <p class="text-2xl font-mono text-cyan-400" id="ui-volt">--.-V</p>
-                    </div>
-                    <div class="p-4 bg-slate-900/30 rounded-2xl border border-slate-700/30">
-                        <p class="text-[10px] text-slate-500 uppercase font-bold mb-1">Current Limit</p>
-                        <p class="text-2xl font-mono text-cyan-400" id="ui-amp">--A</p>
-                    </div>
-                    <div class="p-4 bg-slate-900/30 rounded-2xl border border-slate-700/30">
-                        <p class="text-[10px] text-slate-500 uppercase font-bold mb-1">Firmware</p>
-                        <p class="text-sm font-mono text-cyan-400 truncate" id="ui-fw">NO_DATA</p>
-                    </div>
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-xl transition duration-300">
+                <div class="bg-gray-200 h-48 flex items-center justify-center text-gray-400">
+                    <i class="fa fa-bolt fa-4x"></i>
                 </div>
-
-                <div class="mt-8 pt-8 border-t border-slate-700/50">
-                    <div class="flex justify-between items-center mb-2">
-                        <span class="text-xs font-bold text-slate-400">LOG OUTPUT</span>
-                        <span class="text-[10px] font-mono text-slate-600">v1.0.4-STARK</span>
+                <div class="p-6">
+                    <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2.5 py-0.5 rounded">MID-DRIVE</span>
+                    <h4 class="text-xl font-bold mt-2">M560 Performance</h4>
+                    <p class="text-sm text-gray-500 mb-4 font-mono">PN: MM G5300.750.C</p>
+                    <div class="space-y-2 text-sm text-gray-600 mb-6">
+                        <div class="flex justify-between"><span>Power:</span><strong>750W</strong></div>
+                        <div class="flex justify-between"><span>Torque:</span><strong>140Nm</strong></div>
+                        <div class="flex justify-between"><span>Housing:</span><strong>Magnesium</strong></div>
                     </div>
-                    <div class="bg-black/40 p-4 rounded-xl font-mono text-[10px] text-green-500/80 h-32 overflow-y-auto" id="console">
-                        > SYSTEM IDLE...
-                    </div>
+                    <button class="w-full bg-blue-900 text-white py-2 rounded-lg font-semibold hover:bg-blue-800">Identify Part</button>
                 </div>
             </div>
+
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-xl transition duration-300">
+                <div class="bg-gray-200 h-48 flex items-center justify-center text-gray-400">
+                    <i class="fa fa-circle-dot fa-4x"></i>
+                </div>
+                <div class="p-6">
+                    <span class="bg-green-100 text-green-800 text-xs font-bold px-2.5 py-0.5 rounded">HUB MOTOR</span>
+                    <h4 class="text-xl font-bold mt-2">H550 Fat Bike Hub</h4>
+                    <p class="text-sm text-gray-500 mb-4 font-mono">PN: RM G062.750.DC</p>
+                    <div class="space-y-2 text-sm text-gray-600 mb-6">
+                        <div class="flex justify-between"><span>Power:</span><strong>750W</strong></div>
+                        <div class="flex justify-between"><span>Torque:</span><strong>100Nm</strong></div>
+                        <div class="flex justify-between"><span>Brake:</span><strong>Disc</strong></div>
+                    </div>
+                    <button class="w-full bg-blue-900 text-white py-2 rounded-lg font-semibold hover:bg-blue-800">Identify Part</button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-xl transition duration-300">
+                <div class="bg-gray-200 h-48 flex items-center justify-center text-gray-400">
+                    <i class="fa fa-tablet-screen-button fa-4x"></i>
+                </div>
+                <div class="p-6">
+                    <span class="bg-purple-100 text-purple-800 text-xs font-bold px-2.5 py-0.5 rounded">DISPLAY</span>
+                    <h4 class="text-xl font-bold mt-2">DP C010.CN TFT</h4>
+                    <p class="text-sm text-gray-500 mb-4 font-mono">PN: DP C010.CN</p>
+                    <div class="space-y-2 text-sm text-gray-600 mb-6">
+                        <div class="flex justify-between"><span>Screen:</span><strong>4.0" Color</strong></div>
+                        <div class="flex justify-between"><span>Rating:</span><strong>IP X7</strong></div>
+                        <div class="flex justify-between"><span>Smart:</span><strong>Bluetooth 5.0</strong></div>
+                    </div>
+                    <button class="w-full bg-blue-900 text-white py-2 rounded-lg font-semibold hover:bg-blue-800">Identify Part</button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-xl transition duration-300">
+                <div class="bg-gray-200 h-48 flex items-center justify-center text-gray-400">
+                    <i class="fa fa-battery-full fa-4x"></i>
+                </div>
+                <div class="p-6">
+                    <span class="bg-yellow-100 text-yellow-800 text-xs font-bold px-2.5 py-0.5 rounded">BATTERY</span>
+                    <h4 class="text-xl font-bold mt-2">Intube Battery 748Wh</h4>
+                    <p class="text-sm text-gray-500 mb-4 font-mono">PN: BT F161.B748.C</p>
+                    <div class="space-y-2 text-sm text-gray-600 mb-6">
+                        <div class="flex justify-between"><span>Voltage:</span><strong>36V / 48V</strong></div>
+                        <div class="flex justify-between"><span>Capacity:</span><strong>20.8Ah</strong></div>
+                        <div class="flex justify-between"><span>Energy:</span><strong>748Wh</strong></div>
+                    </div>
+                    <button class="w-full bg-blue-900 text-white py-2 rounded-lg font-semibold hover:bg-blue-800">Identify Part</button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-xl transition duration-300">
+                <div class="bg-gray-200 h-48 flex items-center justify-center text-gray-400">
+                    <i class="fa fa-gears fa-4x"></i>
+                </div>
+                <div class="p-6">
+                    <span class="bg-red-100 text-red-800 text-xs font-bold px-2.5 py-0.5 rounded">TRANSMISSION</span>
+                    <h4 class="text-xl font-bold mt-2">5-Speed Auto Gear Hub</h4>
+                    <p class="text-sm text-gray-500 mb-4 font-mono">PN: RG E510.D</p>
+                    <div class="space-y-2 text-sm text-gray-600 mb-6">
+                        <div class="flex justify-between"><span>Type:</span><strong>Electronic</strong></div>
+                        <div class="flex justify-between"><span>Shifting:</span><strong>Automatic</strong></div>
+                        <div class="flex justify-between"><span>Compatibility:</span><strong>Belt/Chain</strong></div>
+                    </div>
+                    <button class="w-full bg-blue-900 text-white py-2 rounded-lg font-semibold hover:bg-blue-800">Identify Part</button>
+                </div>
+            </div>
+
         </div>
     </main>
 
-    <script>
-        const connectBtn = document.getElementById('connectBtn');
-        const statusText = document.getElementById('status');
-        const consoleLog = document.getElementById('console');
+    <section id="services" class="bg-blue-900 text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-3 gap-12 text-center">
+            <div>
+                <i class="fa fa-microchip fa-3x mb-4 text-blue-400"></i>
+                <h5 class="text-xl font-bold mb-2">BESST Pro Diagnostics</h5>
+                <p class="text-blue-100 text-sm">Full firmware updates, system parameter settings, and digital fault analysis.</p>
+            </div>
+            <div>
+                <i class="fa fa-tools fa-3x mb-4 text-blue-400"></i>
+                <h5 class="text-xl font-bold mb-2">Motor Teardowns</h5>
+                <p class="text-blue-100 text-sm">Expert board-level repair and mechanical restoration for Ultra and Mid-drive units.</p>
+            </div>
+            <div>
+                <i class="fa fa-shield-check fa-3x mb-4 text-blue-400"></i>
+                <h5 class="text-xl font-bold mb-2">Certified Warranty</h5>
+                <p class="text-blue-100 text-sm">Direct liaison for official Bafang warranty claims and authorized replacement parts.</p>
+            </div>
+        </div>
+    </section>
 
-        function updateLog(msg) {
-            const entry = document.createElement('div');
-            entry.innerText = `> ${msg}`;
-            consoleLog.appendChild(entry);
-            consoleLog.scrollTop = consoleLog.scrollHeight;
-        }
+    <footer class="bg-white py-8 border-t">
+        <div class="max-w-7xl mx-auto px-4 text-center text-gray-500 text-sm">
+            <p>&copy; 2026 East Coast E-Bike Warranty Claims Repair Center LLC. All Rights Reserved.</p>
+            <p class="mt-2">Alliance, Ohio | Certified Bafang Technical Support</p>
+        </div>
+    </footer>
 
-        connectBtn.addEventListener('click', async () => {
-            if ("serial" in navigator) {
-                try {
-                    const port = await navigator.serial.requestPort();
-                    await port.open({ baudRate: 1200 }); // Bafang Standard
-                    
-                    statusText.innerText = "LINK ACTIVE";
-                    statusText.classList.remove('text-slate-500');
-                    statusText.classList.add('text-green-400', 'animate-pulse');
-                    
-                    updateLog("PORT OPENED SUCCESSFULLY");
-                    updateLog("INITIALIZING BAFANG HANDSHAKE...");
-                    
-                    // Here is where your JavaScript would send the 
-                    // diagnostic commands to the controller.
-                    
-                } catch (err) {
-                    updateLog("ERROR: " + err.message);
-                    statusText.innerText = "LINK FAILED";
-                    statusText.classList.add('text-red-400');
-                }
-            } else {
-                alert("Please use Chrome or Edge to access the Diagnostic Portal.");
-            }
-        });
-    </script>
 </body>
-                    </html>
-                    
+</html>
