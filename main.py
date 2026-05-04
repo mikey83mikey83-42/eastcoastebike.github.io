@@ -1,6 +1,6 @@
-from fastapi import FastAPI, 
+from fastapi import FastAPI
 from Square import Client
-import shippo
+from shippo import Shippo
 import os
 
 app = FastAPI()
