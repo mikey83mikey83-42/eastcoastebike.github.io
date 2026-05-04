@@ -1,55 +1,28 @@
 import os
 from fastapi import FastAPI
-from square.client import Client
+from supabase import create_client, Client
 
-app = FastAPI(title="East Coast Regional Hub: Motors & Repairs")
+# Initialize the FastAPI app
+app = FastAPI()
 
-# Square Setup
-access_token = os.environ.get('SQUARE_ACCESS_TOKEN')
-client = Client(access_token=access_token, environment='sandbox')
+# Supabase configuration
+# Replace the placeholders with your actual project URL and Key
+url = "YOUR_SUPABASE_URL_HERE"
+key = "YOUR_PUBLISHABLE_KEY_HERE"
+
+# Create the Supabase client
+supabase: Client = create_client(url, key)
 
 @app.get("/")
-def hub_status():
-    return {
-        "hub": "East Coast Regional Warranty Center",
-        "specialties": ["Mid-drive Systems", "Hub Motors", "Board-level Micro-soldering"],
-        "status": "Ready for Intake"
-    }
+async def root():
+    return {"message": "Success! Your API is running and connected to Supabase."}
 
-# --- DEALER INVENTORY (Selling Products) ---
-@app.get("/inventory/motors")
-def get_motor_stock():
-    """
-    Pulls live dealer stock for Mid-drives and Hub motors from Square.
-    """
-    result = client.catalog.list_catalog(types='ITEM')
-    if result.is_success():
-        items = result.body.get('objects', [])
-        # Filter for specific motor types in your Square Catalog
-        inventory = {
-            "mid_drive": [i for i in items if "mid" in i['item_data']['name'].lower()],
-            "hub_motor": [i for i in items if "hub" in i['item_data']['name'].lower()],
-            "electronics": [i for i in items if "controller" in i['item_data']['name'].lower()]
-        }
-        return inventory
-    return {"error": "Could not sync with Square Inventory"}
-
-# --- TECHNICAL SERVICE (Board Level Repairs) ---
-@app.post("/service/intake")
-def repair_intake(motor_type: str, serial: str, fault: str):
-    """
-    Endpoint for logging Mid-drive or Hub motor repairs.
-    Example motor_type: 'Mid-drive' or 'Battery BMS'
-    """
-    return {
-        "status": "Intake Success",
-        "technician": "Regional Hub East",
-        "unit": motor_type,
-        "serial_logged": serial,
-        "diagnosis_queue": "High Priority"
-    }
-
-@app.get("/health")
-def health():
-    return {"status": "healthy"}
-    
+@app.get("/test-db")
+async def test_db():
+    # A quick check to see if we can talk to your database
+    try:
+        response = supabase.table("your_table_name").select("*").limit(1).execute()
+        return {"status": "Connected", "data": response.data}
+    except Exception as e:
+        return {"status": "Error", "details": str(e)}
+        
