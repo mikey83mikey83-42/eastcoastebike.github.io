@@ -6,7 +6,7 @@ import os
 # It's best practice to use environment variables for your token
 client = Square(
     token=os.environ.get('SQUARE_ACCESS_TOKEN', 'YOUR_ACCESS_TOKEN'),
-    environment='production'  # Change to 'production' when you're ready to go live
+    environment='sandbox'  # Change to 'production' when you're ready to go live
 )
 
 def main():
