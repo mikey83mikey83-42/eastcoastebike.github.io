@@ -1,6 +1,6 @@
 import os
 from fastapi import FastAPI
-from square.client import Client
+from Square import Square
 
 # Ensure the filename is Main.py for Render
 app = FastAPI()
@@ -11,7 +11,7 @@ access_token = os.environ.get('SQUARE_ACCESS_TOKEN')
 
 # Initialize the Square Client
 # Using the environment variable directly to avoid AttributeError
-client = Client(
+client = Square(
     access_token=access_token,
     environment='sandbox'  # Change to 'production' when you are ready to go live
 )
