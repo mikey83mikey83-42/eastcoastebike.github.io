@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from Square import Client
+from square import Client
 from shippo import Shippo
 import os
 
