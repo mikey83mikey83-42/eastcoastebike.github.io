@@ -1,38 +1,55 @@
 import os
 from fastapi import FastAPI
-from square import Square
+from square.client import Client
 
-# Ensure the filename is Main.py for Render
-app = FastAPI()
+app = FastAPI(title="East Coast Regional Hub: Motors & Repairs")
 
-# Retrieve your Square Access Token from environment variables
-# Remember to set SQUARE_ACCESS_TOKEN in your Render Dashboard
+# Square Setup
 access_token = os.environ.get('SQUARE_ACCESS_TOKEN')
-
-# Initialize the Square Client
-# Using the environment variable directly to avoid AttributeError
-client = Square(
-    access_token=access_token,
-    environment='sandbox'  # Change to 'production' when you are ready to go live
-)
+client = Client(access_token=access_token, environment='sandbox')
 
 @app.get("/")
-def read_root():
+def hub_status():
     return {
-        "status": "success", 
-        "message": "FastAPI is running with Square Integration"
+        "hub": "East Coast Regional Warranty Center",
+        "specialties": ["Mid-drive Systems", "Hub Motors", "Board-level Micro-soldering"],
+        "status": "Ready for Intake"
+    }
+
+# --- DEALER INVENTORY (Selling Products) ---
+@app.get("/inventory/motors")
+def get_motor_stock():
+    """
+    Pulls live dealer stock for Mid-drives and Hub motors from Square.
+    """
+    result = client.catalog.list_catalog(types='ITEM')
+    if result.is_success():
+        items = result.body.get('objects', [])
+        # Filter for specific motor types in your Square Catalog
+        inventory = {
+            "mid_drive": [i for i in items if "mid" in i['item_data']['name'].lower()],
+            "hub_motor": [i for i in items if "hub" in i['item_data']['name'].lower()],
+            "electronics": [i for i in items if "controller" in i['item_data']['name'].lower()]
+        }
+        return inventory
+    return {"error": "Could not sync with Square Inventory"}
+
+# --- TECHNICAL SERVICE (Board Level Repairs) ---
+@app.post("/service/intake")
+def repair_intake(motor_type: str, serial: str, fault: str):
+    """
+    Endpoint for logging Mid-drive or Hub motor repairs.
+    Example motor_type: 'Mid-drive' or 'Battery BMS'
+    """
+    return {
+        "status": "Intake Success",
+        "technician": "Regional Hub East",
+        "unit": motor_type,
+        "serial_logged": serial,
+        "diagnosis_queue": "High Priority"
     }
 
 @app.get("/health")
-def health_check():
+def health():
     return {"status": "healthy"}
-
-# Example Square API call structure
-@app.get("/locations")
-def list_locations():
-    result = client.locations.list_locations()
-    if result.is_success():
-        return result.body
-    elif result.is_error():
-        return {"error": result.errors}
-        
+    
