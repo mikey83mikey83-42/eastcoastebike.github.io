@@ -1,5 +1,5 @@
-from fastapi import FastAPI, Request
-import square.client
+from fastapi import FastAPI, 
+from Square import Client
 import shippo
 import os
 
