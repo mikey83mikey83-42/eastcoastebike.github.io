@@ -1,6 +1,6 @@
 import os
 from fastapi import FastAPI
-from Square import Square
+from square import Square
 
 # Ensure the filename is Main.py for Render
 app = FastAPI()
