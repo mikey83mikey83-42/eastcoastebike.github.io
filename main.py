@@ -1,30 +1,38 @@
-from square import Square
-from square.core.api_error import ApiError
 import os
+from fastapi import FastAPI
+from square.client import Client
 
-# Initialize the Square client
-# It's best practice to use environment variables for your token
-client = Square(
-    token=os.environ.get('SQUARE_ACCESS_TOKEN', 'YOUR_ACCESS_TOKEN'),
-    environment='sandbox'  # Change to 'production' when you're ready to go live
+# Ensure the filename is Main.py for Render
+app = FastAPI()
+
+# Retrieve your Square Access Token from environment variables
+# Remember to set SQUARE_ACCESS_TOKEN in your Render Dashboard
+access_token = os.environ.get('SQUARE_ACCESS_TOKEN')
+
+# Initialize the Square Client
+# Using the environment variable directly to avoid AttributeError
+client = Client(
+    access_token=access_token,
+    environment='sandbox'  # Change to 'production' when you are ready to go live
 )
 
-def main():
-    try:
-        # Example: List locations to verify the connection
-        response = client.locations.list_locations()
-        
-        # The new SDK allows direct iteration over the response
-        for location in response:
-            print(f"Connected to: {location.name} ({location.id})")
-            
-    except ApiError as e:
-        print("Square API Error:")
-        for error in e.errors:
-            print(f"  - {error.category}: {error.detail}")
-    except Exception as e:
-        print(f"An unexpected error occurred: {e}")
+@app.get("/")
+def read_root():
+    return {
+        "status": "success", 
+        "message": "FastAPI is running with Square Integration"
+    }
 
-if __name__ == "__main__":
-    main()
-    
+@app.get("/health")
+def health_check():
+    return {"status": "healthy"}
+
+# Example Square API call structure
+@app.get("/locations")
+def list_locations():
+    result = client.locations.list_locations()
+    if result.is_success():
+        return result.body
+    elif result.is_error():
+        return {"error": result.errors}
+        
