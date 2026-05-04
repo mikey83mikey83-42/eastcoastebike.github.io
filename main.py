@@ -1,33 +1,30 @@
+from square import Square
+from square.core.api_error import ApiError
 import os
-from fastapi import FastAPI
-from square.client import Client
 
-app = FastAPI()
-
-# Configuration for Production
-# Ensure you have 'SQUARE_ACCESS_TOKEN' set in your Render environment variables
-client = Client(
-    access_token=os.environ.get('SQUARE_ACCESS_TOKEN'),
-    environment='production' 
+# Initialize the Square client
+# It's best practice to use environment variables for your token
+client = Square(
+    token=os.environ.get('SQUARE_ACCESS_TOKEN', 'YOUR_ACCESS_TOKEN'),
+    environment='sandbox'  # Change to 'production' when you're ready to go live
 )
 
-@app.get("/")
-async def root():
-    return {"status": "active", "service": "E-Bike Warranty & Repair Hub"}
-
-@app.get("/test-connection")
-async def test_connection():
-    # Simple call to verify the token and production connection
-    result = client.locations.list_locations()
-    
-    if result.is_success():
-        return {"status": "Connected to Square", "locations": result.body}
-    else:
-        return {"status": "Connection Failed", "errors": result.errors}
+def main():
+    try:
+        # Example: List locations to verify the connection
+        response = client.locations.list_locations()
+        
+        # The new SDK allows direct iteration over the response
+        for location in response:
+            print(f"Connected to: {location.name} ({location.id})")
+            
+    except ApiError as e:
+        print("Square API Error:")
+        for error in e.errors:
+            print(f"  - {error.category}: {error.detail}")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
 
 if __name__ == "__main__":
-    import uvicorn
-    # Render automatically assigns a PORT; defaults to 10000 if not found
-    port = int(os.environ.get("PORT", 10000))
-    uvicorn.run(app, host="0.0.0.0", port=port)
+    main()
     
