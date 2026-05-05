@@ -1,47 +1,69 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Warranty Hub | East Coast E-bike</title>
+    <title>East Coast E-bike | Warranty Hub</title>
     <style>
-        body { background: #0f0f0f; color: #e0e0e0; font-family: 'Segoe UI', sans-serif; text-align: center; margin: 0; }
-        .page { padding: 30px; display: none; animation: fadeIn 0.3s; }
+        :root { --gold: #d4a017; --bg: #0a0a0a; --card: #1a1a1a; }
+        body { background: var(--bg); color: white; font-family: 'Inter', sans-serif; margin: 0; text-align: center; }
+        .container { padding: 40px 20px; display: none; animation: slideUp 0.4s ease-out; }
         .active { display: block; }
-        .btn { background: #d4a017; color: black; border: none; padding: 15px; border-radius: 4px; font-weight: bold; width: 90%; max-width: 400px; cursor: pointer; }
-        select, input, textarea { width: 90%; max-width: 400px; padding: 12px; margin: 10px 0; background: #222; border: 1px solid #444; color: white; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .btn { background: var(--gold); color: black; border: none; padding: 18px 30px; border-radius: 5px; font-weight: 800; width: 100%; max-width: 350px; cursor: pointer; transition: 0.2s; margin: 10px 0; }
+        .btn:active { transform: scale(0.98); }
+        .btn-secondary { background: #333; color: white; }
+        select, input, textarea { width: 100%; max-width: 350px; padding: 15px; margin: 10px 0; background: var(--card); border: 1px solid #333; color: white; border-radius: 5px; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
-    <div id="home" class="page active">
-        <h1 style="color:#d4a017;">{{ company }}</h1>
-        <p>Official Bafang Affiliate & Repair Center</p>
-        <button class="btn" onclick="show('claim')">FILE WARRANTY CLAIM</button>
-        <button class="btn" onclick="alert('Parts Store Opening Soon!')" style="background:#444; color:white; margin-top:20px;">SHOP EXCLUSIVE PARTS</button>
+
+    <div id="home" class="container active">
+        <h1 style="color:var(--gold); font-size: 2rem;">{{ company }}</h1>
+        <p style="opacity: 0.7;">Official Bafang Affiliate | Repair & Parts Hub</p>
+        <button class="btn" onclick="nav('auth')">MEMBER LOGIN</button>
+        <button class="btn btn-secondary" onclick="nav('inventory')">BROWSE EXCLUSIVE PARTS</button>
     </div>
 
-    <div id="claim" class="page">
+    <div id="auth" class="container">
+        <h2>Account Access</h2>
+        <button class="btn" onclick="nav('claim')">CREATE REPAIR ACCOUNT</button>
+        <button class="btn" onclick="nav('claim')">SIGN IN</button>
+        <p onclick="nav('home')" style="color:var(--gold); cursor:pointer;">← Back to Home</p>
+    </div>
+
+    <div id="claim" class="container">
         <h2>Submit Warranty Claim</h2>
         <form action="/submit-claim" method="POST">
-            <select name="motor_model" required>
-                <option value="">Select Bafang System</option>
-                <option value="M560">M560 (Heavy Assist eMTB)</option>
-                <option value="M510">M510 (eMTB Performance)</option>
-                <option value="M430">M430 (eCargo/eSpeed)</option>
-                <option value="H730">H730 (Rear Hub - Auto 3 Speed)</option>
-                <option value="M210">M210 (eCity/eTour)</option>
+            <select name="motor" required>
+                <option value="">Select Motor System</option>
+                <option value="M560">M560 - Heavy eMTB</option>
+                <option value="M510">M510 - Performance</option>
+                <option value="M430">M430 - eCargo</option>
+                <option value="H730">H730 - Auto 3-Speed Hub</option>
+                <option value="GVT-System">GVT Auto-Shift System</option>
             </select>
-            <input type="text" name="policy_num" placeholder="Policy Number / VIN" required>
-            <textarea name="issue" placeholder="Details of repair needed..." rows="4"></textarea>
-            <button type="submit" class="btn">SUBMIT TO EAST COAST REPAIR</button>
+            <input type="text" name="policy" placeholder="Policy # or Serial Number" required>
+            <textarea name="detail" placeholder="Describe the issue for our technicians..." rows="4"></textarea>
+            <button type="submit" class="btn">INITIALIZE CLAIM</button>
         </form>
-        <p onclick="show('home')" style="cursor:pointer; color:#d4a017;">← Cancel</p>
+        <p onclick="nav('auth')" style="color:var(--gold); cursor:pointer;">← Back</p>
+    </div>
+
+    <div id="inventory" class="container">
+        <h2>Exclusive Bafang Parts</h2>
+        <p>GVT Hubs, Displays, and BESST Connectors.</p>
+        <div style="background:var(--card); padding:20px; border-radius:10px; margin: 10px auto; max-width:350px;">
+            <p>Inventory Syncing from 2027 Workbook...</p>
+        </div>
+        <button class="btn" onclick="nav('home')">RETURN HOME</button>
     </div>
 
     <script>
-        function show(id) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        function nav(id) {
+            document.querySelectorAll('.container').forEach(c => c.classList.remove('active'));
             document.getElementById(id).classList.add('active');
+            window.scrollTo(0,0);
         }
     </script>
 </body>
