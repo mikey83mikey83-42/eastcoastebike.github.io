@@ -19,9 +19,9 @@ async def home(request: Request):
 
 @app.post("/submit-claim")
 async def handle_claim(
-    motor: str = Form(...), 
-    policy: str = Form(...), 
-    detail: str = Form(...)
+    "motor": str = Form(...), 
+    "policy": str = Form(...), 
+    "detail": str = Form(...)
 ):
     # Logs claim for East Coast E-bike & Bafang Affiliate systems
     payload = {
