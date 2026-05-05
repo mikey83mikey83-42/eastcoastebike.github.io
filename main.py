@@ -8,7 +8,7 @@ app = FastAPI()
 
 # --- SUPABASE CONFIGURATION ---
 # Paste your specific URL and Key inside the quotes below
-SUPABASE_URL = "https://mcp.supabase.com/mcp?project_ref=yytzuwexpaxdfuklxbty
+SUPABASE_URL = "https://mcp.supabase.com/mcp?project_ref=yytzuwexpaxdfuklxbty"
 SUPABASE_KEY = "sb_publishable_v8YFBkLK0KXdNvZQKDPDgQ_fqWA4KxU"
 
 # Initialize the Supabase client
