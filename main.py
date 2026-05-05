@@ -27,4 +27,4 @@ async def read_index():
 @app.get("/status")
 async def get_status():
     return {
-        
+    } 
