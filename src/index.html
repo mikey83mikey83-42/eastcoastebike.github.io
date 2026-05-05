@@ -1,168 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>East Coast E-Bike | Authorized Bafang Warranty Hub</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Warranty Hub | East Coast E-bike</title>
     <style>
-        .glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
-        .hero-gradient { background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%); }
+        body { background: #0f0f0f; color: #e0e0e0; font-family: 'Segoe UI', sans-serif; text-align: center; margin: 0; }
+        .page { padding: 30px; display: none; animation: fadeIn 0.3s; }
+        .active { display: block; }
+        .btn { background: #d4a017; color: black; border: none; padding: 15px; border-radius: 4px; font-weight: bold; width: 90%; max-width: 400px; cursor: pointer; }
+        select, input, textarea { width: 90%; max-width: 400px; padding: 12px; margin: 10px 0; background: #222; border: 1px solid #444; color: white; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-900 font-sans">
+<body>
+    <div id="home" class="page active">
+        <h1 style="color:#d4a017;">{{ company }}</h1>
+        <p>Official Bafang Affiliate & Repair Center</p>
+        <button class="btn" onclick="show('claim')">FILE WARRANTY CLAIM</button>
+        <button class="btn" onclick="alert('Parts Store Opening Soon!')" style="background:#444; color:white; margin-top:20px;">SHOP EXCLUSIVE PARTS</button>
+    </div>
 
-    <nav class="sticky top-0 z-50 glass border-b border-slate-200">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center space-x-3">
-                <div class="bg-blue-600 p-2 rounded-lg text-white">
-                    <i class="fa fa-bolt text-xl"></i>
-                </div>
-                <span class="text-2xl font-black tracking-tighter text-slate-900 uppercase">East Coast <span class="text-blue-600">E-Bike</span></span>
-            </div>
-            <div class="hidden md:flex space-x-8 text-sm font-bold uppercase tracking-widest text-slate-600">
-                <a href="#inventory" class="hover:text-blue-600 transition">Inventory</a>
-                <a href="#diagnostics" class="hover:text-blue-600 transition">Diagnostics</a>
-                <a href="mailto:support@eastcoastebike.com" class="bg-slate-900 text-white px-6 py-2 rounded-full hover:bg-blue-600 transition">File Claim</a>
-            </div>
-        </div>
-    </nav>
+    <div id="claim" class="page">
+        <h2>Submit Warranty Claim</h2>
+        <form action="/submit-claim" method="POST">
+            <select name="motor_model" required>
+                <option value="">Select Bafang System</option>
+                <option value="M560">M560 (Heavy Assist eMTB)</option>
+                <option value="M510">M510 (eMTB Performance)</option>
+                <option value="M430">M430 (eCargo/eSpeed)</option>
+                <option value="H730">H730 (Rear Hub - Auto 3 Speed)</option>
+                <option value="M210">M210 (eCity/eTour)</option>
+            </select>
+            <input type="text" name="policy_num" placeholder="Policy Number / VIN" required>
+            <textarea name="issue" placeholder="Details of repair needed..." rows="4"></textarea>
+            <button type="submit" class="btn">SUBMIT TO EAST COAST REPAIR</button>
+        </form>
+        <p onclick="show('home')" style="cursor:pointer; color:#d4a017;">← Cancel</p>
+    </div>
 
-    <header class="hero-gradient text-white py-24 px-6 relative overflow-hidden">
-        <div class="max-w-5xl mx-auto relative z-10">
-            <span class="inline-block bg-blue-500/20 text-blue-300 border border-blue-500/30 px-4 py-1 rounded-full text-xs font-bold uppercase mb-6">Regional Warranty Claims Repair Center</span>
-            <h1 class="text-6xl md:text-7xl font-black mb-8 leading-tight">The Bafang <br><span class="text-blue-400">Axle Hub</span></h1>
-            <p class="text-xl text-slate-300 max-w-2xl mb-12 font-light leading-relaxed">Authorized technical support for 2026/2027 drive systems. Specializing in board-level diagnostics, motor teardowns, and firmware synchronization.</p>
-            <div class="flex flex-wrap gap-4">
-                <a href="#inventory" class="bg-blue-600 hover:bg-blue-500 px-10 py-4 rounded-xl font-bold text-lg transition-all transform hover:-translate-y-1 shadow-2xl shadow-blue-600/20">Explore Inventory</a>
-                <a href="#diagnostics" class="bg-white/10 hover:bg-white/20 border border-white/20 px-10 py-4 rounded-xl font-bold text-lg transition">System Specs</a>
-            </div>
-        </div>
-        <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(#3b82f6 1px, transparent 1px); background-size: 40px 40px;"></div>
-    </header>
-
-    <section id="inventory" class="py-20 px-6">
-        <div class="max-w-7xl mx-auto">
-            <div class="mb-16">
-                <h2 class="text-4xl font-black text-slate-900 mb-4">Official 2027 Inventory</h2>
-                <div class="h-1.5 w-24 bg-blue-600 rounded-full"></div>
-            </div>
-
-            <h3 class="text-2xl font-bold text-slate-800 mb-8 flex items-center gap-3">
-                <i class="fa fa-cogs text-blue-600"></i> Mid-Drive Performance (M-Series)
-            </h3>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
-                <div class="bg-white rounded-3xl p-8 border border-slate-200 hover:shadow-2xl transition group">
-                    <h4 class="text-2xl font-black mb-1 group-hover:text-blue-600 transition">M620 Ultra</h4>
-                    <p class="font-mono text-[11px] text-slate-400 mb-6 tracking-tighter">MODEL: MM G510.1000.C</p>
-                    <ul class="space-y-3 text-sm">
-                        <li class="flex justify-between border-b border-slate-100 pb-2"><span>Peak Torque</span><strong>160Nm</strong></li>
-                        <li class="flex justify-between border-b border-slate-100 pb-2"><span>Rated Power</span><strong>1000W</strong></li>
-                        <li class="flex justify-between border-b border-slate-100 pb-2"><span>Sensors</span><strong>Triple (Torque/Speed)</strong></li>
-                    </ul>
-                    <button class="w-full mt-8 bg-slate-50 text-slate-900 py-3 rounded-xl font-bold border border-slate-200 hover:bg-blue-600 hover:text-white transition">Identify Part</button>
-                </div>
-                <div class="bg-white rounded-3xl p-8 border border-slate-200 hover:shadow-2xl transition group">
-                    <h4 class="text-2xl font-black mb-1 group-hover:text-blue-600 transition">M560 Mag</h4>
-                    <p class="font-mono text-[11px] text-slate-400 mb-6 tracking-tighter">MODEL: MM G5300.750.C</p>
-                    <ul class="space-y-3 text-sm">
-                        <li class="flex justify-between border-b border-slate-100 pb-2"><span>Peak Torque</span><strong>140Nm</strong></li>
-                        <li class="flex justify-between border-b border-slate-100 pb-2"><span>Weight</span><strong>3.3kg</strong></li>
-                        <li class="flex justify-between border-b border-slate-100 pb-2"><span>Material</span><strong>Magnesium Housing</strong></li>
-                    </ul>
-                    <button class="w-full mt-8 bg-slate-50 text-slate-900 py-3 rounded-xl font-bold border border-slate-200 hover:bg-blue-600 hover:text-white transition">Identify Part</button>
-                </div>
-                <div class="bg-white rounded-3xl p-8 border border-slate-200 hover:shadow-2xl transition group">
-                    <h4 class="text-2xl font-black mb-1 group-hover:text-blue-600 transition">M510 eMTB</h4>
-                    <p class="font-mono text-[11px] text-slate-400 mb-6 tracking-tighter">MODEL: MM G522.250.C</p>
-                    <ul class="space-y-3 text-sm">
-                        <li class="flex justify-between border-b border-slate-100 pb-2"><span>Peak Torque</span><strong>95Nm</strong></li>
-                        <li class="flex justify-between border-b border-slate-100 pb-2"><span>Power</span><strong>250W</strong></li>
-                        <li class="flex justify-between border-b border-slate-100 pb-2"><span>Target</span><strong>Off-Road Performance</strong></li>
-                    </ul>
-                    <button class="w-full mt-8 bg-slate-50 text-slate-900 py-3 rounded-xl font-bold border border-slate-200 hover:bg-blue-600 hover:text-white transition">Identify Part</button>
-                </div>
-            </div>
-
-            <h3 class="text-2xl font-bold text-slate-800 mb-8 flex items-center gap-3">
-                <i class="fa fa-microchip text-blue-600"></i> GVT & Shifting (Transmission)
-            </h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
-                <div class="bg-slate-900 text-white p-10 rounded-3xl relative overflow-hidden">
-                    <div class="relative z-10">
-                        <span class="text-blue-400 text-xs font-black uppercase tracking-widest">2027 Flagship Tech</span>
-                        <h4 class="text-3xl font-black mt-4 mb-2">RG E510.D Auto Gear</h4>
-                        <p class="text-slate-400 font-light mb-8">5-speed electronic gear hub with Gear Variable Transmission technology.</p>
-                        <ul class="grid grid-cols-2 gap-4 text-xs font-bold uppercase">
-                            <li class="bg-white/5 p-3 rounded-lg border border-white/10">300+ Auto Shifts/20km</li>
-                            <li class="bg-white/5 p-3 rounded-lg border border-white/10">Weather Resistant</li>
-                        </ul>
-                    </div>
-                    <i class="fa fa-shield-halved absolute -right-8 -bottom-8 text-white/5 text-[200px]"></i>
-                </div>
-                <div class="bg-white p-10 rounded-3xl border border-slate-200 shadow-sm flex flex-col justify-center">
-                    <h4 class="text-2xl font-black mb-4">H700 Dual Speed</h4>
-                    <p class="text-slate-500 text-sm mb-6">Innovative rear hub with automatic 2-speed shifting based on real-time bicycle speed.</p>
-                    <p class="font-mono text-xs text-blue-600">SYSTEM CODE: RM G040.250.DC</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="diagnostics" class="bg-slate-900 text-white py-24 px-6 border-t-8 border-blue-600">
-        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-20 items-center">
-            <div>
-                <h2 class="text-5xl font-black mb-8 leading-tight">BESST Pro <br><span class="text-blue-400">Interface Suite</span></h2>
-                <p class="text-slate-400 text-lg mb-10 font-light leading-relaxed">As an authorized service center, we utilize the Bafang E-Mobility Sales & Service Tool for comprehensive system health checks.</p>
-                <div class="space-y-6">
-                    <div class="flex items-start gap-4">
-                        <div class="bg-blue-600/20 p-3 rounded-lg text-blue-400"><i class="fa fa-sync-alt"></i></div>
-                        <div>
-                            <h5 class="font-bold">Firmware Flashing</h5>
-                            <p class="text-sm text-slate-500">Update M560, M620, and M820 controllers to the latest protocol versions.</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start gap-4">
-                        <div class="bg-blue-600/20 p-3 rounded-lg text-blue-400"><i class="fa fa-file-invoice"></i></div>
-                        <div>
-                            <h5 class="font-bold">Diagnostic Reporting</h5>
-                            <p class="text-sm text-slate-500">Full fault code history and parameter adjustment for torque sensors.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="relative">
-                <div class="bg-blue-600 absolute -inset-4 rounded-full blur-3xl opacity-20"></div>
-                <div class="relative bg-slate-800 p-12 rounded-3xl border border-slate-700 text-center shadow-2xl">
-                    <i class="fa fa-microchip text-7xl text-blue-500 mb-8"></i>
-                    <h4 class="text-3xl font-black mb-4 uppercase tracking-tighter">CAN-BUS & UART</h4>
-                    <p class="text-slate-400 text-sm font-mono">AUTHORIZED PROTOCOL ACCESS</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer class="bg-white py-20 px-6 border-t border-slate-200">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-12">
-            <div class="text-center md:text-left">
-                <span class="text-3xl font-black tracking-tighter text-slate-900 uppercase">East Coast <span class="text-blue-600">E-Bike</span></span>
-                <p class="text-slate-400 text-xs mt-2 font-bold uppercase tracking-widest">Authorized Warranty Hub</p>
-            </div>
-            <div class="text-slate-400 text-sm text-center md:text-right font-medium">
-                <p>&copy; 2026 East Coast E-Bike Warranty Claims Repair Center LLC.</p>
-                <p class="mt-1">Alliance, Ohio | Specialists in Bafang Drive Engineering</p>
-            </div>
-        </div>
-    </footer>
-
-</body>
     <script>
-  fetch('https://warranty.onrender.com/')
-    .then(response => response.json())
-    .then(data => {
-      // This line finds the spot on your page to put the info
-      document.body.innerHTML += `<p>Data from API: ${JSON.stringify(data)}</p>`;
-    })
-    .catch(error => console.error('Error:', error));
-    </html>
+        function show(id) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+    </script>
+</body>
+</html>
