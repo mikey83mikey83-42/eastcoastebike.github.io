@@ -1,28 +1,30 @@
-import os
 from fastapi import FastAPI
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from supabase import create_client, Client
+import os
 
-# Initialize the FastAPI app
 app = FastAPI()
 
-# Supabase configuration
-# Replace the placeholders with your actual project URL and Key
-url = "https://mcp.supabase.com/mcp?project_ref=yytzuwexpaxdfuklxbty"
-key = "sb_publishable_v8YFBkLK0KXdNvZQKDPDgQ_fqWA4KxU"
+# --- SUPABASE CONFIGURATION ---
+# Paste your specific URL and Key inside the quotes below
+SUPABASE_URL = I https://mcp.supabase.com/mcp?project_ref=yytzuwexpaxdfuklxbty
+SUPABASE_KEY = "sb_publishable_v8YFBkLK0KXdNvZQKDPDgQ_fqWA4KxU"
 
-# Create the Supabase client
-supabase: Client = create_client(url, key)
+# Initialize the Supabase client
+supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+
+# --- STATIC FILES & FRONTEND ---
+# This mounts the 'src' folder so your CSS/JS files can be found by the HTML
+if os.path.exists("src"):
+    app.mount("/src", StaticFiles(directory="src"), name="src")
 
 @app.get("/")
-async def root():
-    return {"message": "Success! Your API is running and connected to Supabase."}
+async def read_index():
+    # This serves your main index.html file to the browser
+    return FileResponse('src/index.html')
 
-@app.get("/test-db")
-async def test_db():
-    # A quick check to see if we can talk to your database
-    try:
-        response = supabase.table("your_table_name").select("*").limit(1).execute()
-        return {"status": "Connected", "data": response.data}
-    except Exception as e:
-        return {"status": "Error", "details": str(e)}
+@app.get("/status")
+async def get_status():
+    return {
         
