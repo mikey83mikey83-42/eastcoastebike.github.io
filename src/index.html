@@ -157,4 +157,14 @@
     </footer>
 
 </body>
+    <script>
+  fetch('https://warranty.onrender.com/')
+    .then(response => response.json())
+    .then(data => {
+      // This line finds the spot on your page to put the info
+      document.body.innerHTML += `<p>Data from API: ${JSON.stringify(data)}</p>`;
+    })
+    .catch(error => console.error('Error:', error));
+    </script>
+    
 </html>
