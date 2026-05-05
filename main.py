@@ -7,8 +7,8 @@ app = FastAPI()
 
 # Supabase configuration
 # Replace the placeholders with your actual project URL and Key
-url = "YOUR_SUPABASE_URL_HERE"
-key = "YOUR_PUBLISHABLE_KEY_HERE"
+url = "https://mcp.supabase.com/mcp?project_ref=yytzuwexpaxdfuklxbty"
+key = "sb_publishable_v8YFBkLK0KXdNvZQKDPDgQ_fqWA4KxU"
 
 # Create the Supabase client
 supabase: Client = create_client(url, key)
