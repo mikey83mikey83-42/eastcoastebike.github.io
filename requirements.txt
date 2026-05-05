@@ -1,7 +1,5 @@
 fastapi
 uvicorn
 supabase
-python-dotenv
-httpx
-square
-shippo
+python-multipart
+jinja2
