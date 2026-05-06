@@ -1,22 +1,16 @@
-import subprocess
+import os
 import sys
+import subprocess
+from fastapi import FastAPI, Request, Form, HTTPException
+from fastapi.templating import Jinja2Templates
+from fastapi.responses import HTMLResponse, RedirectResponse
 
-# Force install square at runtime if it's missing
+# This ensures Square is ready before the app fully boots
 try:
     from square.client import Client as SquareClient
 except ImportError:
     subprocess.check_call([sys.executable, "-m", "pip", "install", "square"])
     from square.client import Client as SquareClient
-
-import os
-from fastapi import FastAPI, Request, Form, HTTPException
-# ... the rest of your code stays the same
-import os
-from fastapi import FastAPI, Request, Form, HTTPException
-from fastapi.templating import Jinja2Templates
-from fastapi.responses import HTMLResponse, RedirectResponse
-from supabase import create_client, Client
-from square.client import Client as SquareClient
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
