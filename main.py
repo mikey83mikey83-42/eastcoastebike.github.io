@@ -20,7 +20,7 @@ supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY) if SUPABASE_URL els
 # Square for payment processing
 square_client = SquareClient(
     access_token=SQUARE_ACCESS_TOKEN,
-    environment='production' # Toggle to 'sandbox' for testing
+    environment='production' # Set to 'sandbox' in Render env vars for testing
 )
 
 @app.get("/", response_class=HTMLResponse)
@@ -84,7 +84,7 @@ async def handle_claim(
 
 if __name__ == "__main__":
     import uvicorn
-    port = int(os.environ.get("PORT", 8000))
+    # Use 10000 as default for Render if PORT is missing
+    port = int(os.environ.get("PORT", 10000))
     uvicorn.run(app, host="0.0.0.0", port=port)
-            
-
+    
