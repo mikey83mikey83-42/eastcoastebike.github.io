@@ -84,7 +84,7 @@ async def handle_claim(
 
 if __name__ == "__main__":
     import uvicorn
-    # Use 10000 as default for Render if PORT is missing
+    # This line is key: it looks for PORT first, then defaults to 10000
     port = int(os.environ.get("PORT", 10000))
     uvicorn.run(app, host="0.0.0.0", port=port)
     
