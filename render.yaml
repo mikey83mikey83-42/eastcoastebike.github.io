@@ -1,47 +1,6 @@
-      name: East Coast Hub Full Deployment
-
-on:
-  push:
-    branches: [ main ]
-
-jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      # --- 1. DATABASE LAYER ---
-      - name: Setup Supabase CLI
-        uses: supabase/setup-cli@v1
-
-      - name: Push Database Migrations
-        run: supabase db push
-        env:
-          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
-          PROJECT_ID: ${{ secrets.SUPABASE_PROJECT_ID }}
-
-      # --- 2. FRONTEND LAYER ---
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Build React Frontend
-        run: |
-          npm install
-          npm run build
-        # This ensures your static files are ready for Render to serve
-
-      # --- 3. DEPLOYMENT LAYER ---
-      - name: Trigger Render Redeploy
-        env:
-          deploy_url: ${{ secrets.RENDER_DEPLOY_HOOK }}
-        run: |
-          if [ -z "$deploy_url" ]; then
-            echo "Error: RENDER_DEPLOY_HOOK secret is missing!"
-            exit 1
-          fi
-          curl -X POST "$deploy_url"
+services:
+  - type: web
+    name: eastcoastebike-api
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn Main:app --host 0.0.0.0 --port 10000

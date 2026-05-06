@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>East Coast E-bike | Warranty Portal</title>
+    <style>
+        :root { --brand-navy: #1B365D; --brand-teal: #4A90A4; }
+        body { font-family: sans-serif; line-height: 1.6; margin: 0; padding: 20px; background-color: #f0f2f5; color: #333; }
+        .container { max-width: 500px; margin: 20px auto; background: white; padding: 30px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; }
+        .logo { max-width: 180px; height: auto; margin-bottom: 10px; }
+        h1 { color: var(--brand-navy); margin: 0; font-size: 1.5rem; text-transform: uppercase; }
+        .subtitle { color: var(--brand-teal); margin-bottom: 25px; font-weight: bold; font-size: 0.9rem; }
+        form { text-align: left; }
+        label { display: block; margin: 15px 0 5px; font-weight: 600; font-size: 0.85rem; }
+        input, textarea { width: 100%; padding: 12px; border: 2px solid #eee; border-radius: 8px; box-sizing: border-box; font-size: 16px; margin-bottom: 10px; }
+        button { width: 100%; padding: 15px; background-color: var(--brand-navy); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 1rem; font-weight: bold; margin-top: 20px; }
+        .footer { text-align: center; margin-top: 30px; font-size: 0.75rem; color: #888; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <img src="5483.png" alt="Logo" class="logo">
+    <h1>Warranty Portal</h1>
+    <p class="subtitle">Bafang Authorized Service Center</p>
+    <form id="warrantyForm">
+        <label>Full Name</label>
+        <input type="text" name="customer_name" required>
+        <label>Email Address</label>
+        <input type="email" name="email" required>
+        <label>Bafang Serial / Policy #</label>
+        <input type="text" name="serial_number" required>
+        <label>Description of Fault</label>
+        <textarea name="issue_description" rows="4" required></textarea>
+        <button type="submit" id="submitBtn">Submit Claim</button>
+    </form>
+</div>
+<div class="footer">&copy; 2026 East Coast E-bike & Bafang Warranty Repair</div>
+<script>
+    const form = document.getElementById('warrantyForm');
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('submitBtn');
+        btn.disabled = true;
+        btn.innerText = 'Processing...';
+        const data = Object.fromEntries(new FormData(form).entries());
+        try {
+            const response = await fetch('https://east-coast-ebike-warranty.onrender.com/submit-claim', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+            });
+            if (response.ok) { alert('Success! Your claim has been logged.'); form.reset(); }
+            else { alert('Submission failed.'); }
+        } catch (error) { alert('Server unreachable.'); }
+        finally { btn.disabled = false; btn.innerText = 'Submit Claim'; }
+    });
+</script>
+</body>
+</html>
