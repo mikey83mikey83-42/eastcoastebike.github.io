@@ -1,3 +1,16 @@
+import subprocess
+import sys
+
+# Force install square at runtime if it's missing
+try:
+    from square.client import Client as SquareClient
+except ImportError:
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "square"])
+    from square.client import Client as SquareClient
+
+import os
+from fastapi import FastAPI, Request, Form, HTTPException
+# ... the rest of your code stays the same
 import os
 from fastapi import FastAPI, Request, Form, HTTPException
 from fastapi.templating import Jinja2Templates
