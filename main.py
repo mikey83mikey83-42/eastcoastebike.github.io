@@ -1,5 +1,5 @@
 import os
-from fastapi import FastAPI, Request, Form
+from fastapi import FastAPI, Request, Form, Response
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from supabase import create_client, Client
@@ -7,23 +7,32 @@ from supabase import create_client, Client
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 
-# --- OFFICIAL BUSINESS CONFIG ---
-COMPANY = "East Coast E-bike Warranty Claims Repair Center LLC"
-SUPABASE_URL = "https://yytzuwexpaxdfuklxbty.supabase.co"
-SUPABASE_KEY = "sb_publishable_v8YFBkLK0KXdNvZQKDPDgQ_fqWA4KxU"
+# SILENCE FAVICON 404 (Verified Working)
+@app.get("/favicon.ico", include_in_schema=False)
+async def favicon():
+    return Response(content="", media_type="image/x-icon")
+
+# OFFICIAL BUSINESS CONFIG
+COMPANY = "East Coast E-bike & Bafang Warranty Claims Rep"
+SUPABASE_URL = "https://yytzumexpaxdfuklxbty.supabase.co"
+# Note: Ensure this is your Supabase Anon Key
+SUPABASE_KEY = "sb_publishable_ghp_5x1JKGeO3OLWd..." 
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request, "company": COMPANY})
+    # This syntax is the most stable for Python 3.12 + FastAPI
+    return templates.TemplateResponse(
+        "index.html", 
+        {"request": request}
+    )
 
 @app.post("/submit-claim")
 async def handle_claim(
-    motor: str = Form(...), 
-    policy: str = Form(...), 
+    motor: str = Form(...),
+    policy: str = Form(...),
     detail: str = Form(...)
 ):
-    # Logs claim for East Coast E-bike & Bafang Affiliate systems
     payload = {
         "entity": COMPANY,
         "motor_system": motor,
@@ -31,9 +40,12 @@ async def handle_claim(
         "issue_description": detail,
         "status": "Awaiting BESST Pro Diagnostics"
     }
+
     try:
-        supabase.table("claims").insert(payload).execute()
-        return {"status": "Success", "message": f"Claim filed with {COMPANY}. Our team will contact you shortly."}
+        # Wrapping in a list [payload] fixes the database-side TypeError
+        supabase.table("claims").insert([payload]).execute()
+        return {"status": "Success", "message": "Claim submitted successfully"}
     except Exception as e:
+        print(f"Error: {e}")
         return {"status": "Error", "message": str(e)}
         
