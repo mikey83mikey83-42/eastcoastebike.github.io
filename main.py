@@ -1,51 +1,55 @@
 import os
-from fastapi import FastAPI, Request, Form, Response
-from fastapi.responses import HTMLResponse
+from fastapi import FastAPI, Request, Form
 from fastapi.templating import Jinja2Templates
-from supabase import create_client, Client
+from fastapi.responses import HTMLResponse, FileResponse
+from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
+
+# Setup for templates and static files
+# Make sure these folders exist in your root directory
 templates = Jinja2Templates(directory="templates")
 
-# SILENCE FAVICON 404 (Verified Working)
-@app.get("/favicon.ico", include_in_schema=False)
+# Favicon route to prevent 404 errors in logs
+@app.get('/favicon.ico', include_in_schema=False)
 async def favicon():
-    return Response(content="", media_type="image/x-icon")
-
-# OFFICIAL BUSINESS CONFIG
-COMPANY = "East Coast E-bike & Bafang Warranty Claims Rep"
-SUPABASE_URL = "https://yytzumexpaxdfuklxbty.supabase.co"
-# Note: Ensure this is your Supabase Anon Key
-SUPABASE_KEY = "sb_publishable_ghp_5x1JKGeO3OLWd..." 
-supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+    return FileResponse('static/favicon.ico')
 
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
-    # This syntax is the most stable for Python 3.12 + FastAPI
+    """
+    Renders the main landing page for the East Coast E-bike 
+    & Bafang Warranty Claims Repair Center.
+    """
+    # FIXED: Template name "index.html" MUST come first.
+    # The dictionary with "request" is the second argument.
     return templates.TemplateResponse(
         "index.html", 
-        {"request": request}
+        {"request": request, "title": "Bafang Warranty Hub"}
     )
 
 @app.post("/submit-claim")
 async def handle_claim(
-    motor: str = Form(...),
-    policy: str = Form(...),
-    detail: str = Form(...)
+    request: Request,
+    customer_name: str = Form(...),
+    serial_number: str = Form(...),
+    issue_description: str = Form(...)
 ):
-    payload = {
-        "entity": COMPANY,
-        "motor_system": motor,
-        "policy_id": policy,
-        "issue_description": detail,
-        "status": "Awaiting BESST Pro Diagnostics"
-    }
+    """
+    Endpoint for handling Bafang warranty claim submissions.
+    This is where your Supabase integration logic will live.
+    """
+    # Logic for Supabase / Database insertion goes here
+    return templates.TemplateResponse(
+        "index.html", 
+        {
+            "request": request, 
+            "message": f"Claim received for {customer_name}. We will review the motor/battery logs."
+        }
+    )
 
-    try:
-        # Wrapping in a list [payload] fixes the database-side TypeError
-        supabase.table("claims").insert([payload]).execute()
-        return {"status": "Success", "message": "Claim submitted successfully"}
-    except Exception as e:
-        print(f"Error: {e}")
-        return {"status": "Error", "message": str(e)}
-        
+if __name__ == "__main__":
+    import uvicorn
+    # Standard port for Render/Termux testing
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
