@@ -3,3 +3,4 @@ uvicorn
 supabase
 python-multipart
 jinja2
+stripe
