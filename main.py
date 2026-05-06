@@ -1,66 +1,68 @@
 import os
-from fastapi import FastAPI, Request, Form
+from fastapi import FastAPI, Request, Form, HTTPException
 from fastapi.templating import Jinja2Templates
-from fastapi.responses import HTMLResponse, FileResponse
-from fastapi.staticfiles import StaticFiles
+from fastapi.responses import HTMLResponse
+from supabase import create_client, Client
+import stripe
 
-# Initialize FastAPI app
 app = FastAPI()
-
-# Configure Templates - Ensure your 'templates' folder exists in the root
 templates = Jinja2Templates(directory="templates")
 
-# Mount Static Files (for CSS, JS, and your logo/favicon)
-# Create a folder named 'static' if you haven't already
-if os.path.exists("static"):
-    app.mount("/static", StaticFiles(directory="static"), name="static")
+# --- CONFIGURATION (Uses Render/Termux Env Vars) ---
+SUPABASE_URL = os.environ.get("SUPABASE_URL")
+SUPABASE_KEY = os.environ.get("SUPABASE_KEY")
+STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY")
 
-# Favicon route to keep logs clean and prevent 404s
-@app.get('/favicon.ico', include_in_schema=False)
-async def favicon():
-    if os.path.exists('static/favicon.ico'):
-        return FileResponse('static/favicon.ico')
-    return HTMLResponse(status_code=204)
+# Initialize Clients
+supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY) if SUPABASE_URL else None
+stripe.api_key = STRIPE_SECRET_KEY
 
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
-    """
-    Main landing page for East Coast E-bike & Bafang Warranty Hub.
-    """
-    # FIXED: "index.html" is now the first argument (fixes the TypeError)
-    return templates.TemplateResponse(
-        "index.html", 
-        {"request": request, "status": "Ready for Bafang Repairs"}
-    )
+    return templates.TemplateResponse("index.html", {"request": request})
 
 @app.post("/submit-claim")
 async def handle_claim(
     request: Request,
     customer_name: str = Form(...),
     serial_number: str = Form(...),
-    issue_details: str = Form(...)
+    issue: str = Form(...)
 ):
-    """
-    Handle warranty claim submissions. 
-    This connects to your automated business logic.
-    """
-    # This is where your Supabase / Stripe logic will trigger
-    return templates.TemplateResponse(
-        "index.html", 
-        {
-            "request": request, 
-            "message": f"Success! Claim for {customer_name} has been queued for review."
+    # 1. SAVE TO SUPABASE
+    try:
+        data = {
+            "customer_name": customer_name,
+            "serial_number": serial_number,
+            "issue": issue,
+            "status": "pending"
         }
-    )
+        # Assuming your table is named 'claims'
+        supabase.table("claims").insert(data).execute()
+    except Exception as e:
+        print(f"Supabase Error: {e}")
+        # We keep going so the user isn't blocked, but log it
 
-# Health check endpoint for Render deployment
-@app.get("/health")
-async def health_check():
-    return {"status": "active", "environment": "Render/Termux"}
+    # 2. CREATE STRIPE CHECKOUT (e.g., for a $50 diagnostic fee)
+    try:
+        checkout_session = stripe.checkout.Session.create(
+            payment_method_types=['card'],
+            line_items=[{
+                'price_data': {
+                    'currency': 'usd',
+                    'product_data': {'name': 'Bafang Diagnostic Fee'},
+                    'unit_amount': 5000, # $50.00
+                },
+                'quantity': 1,
+            }],
+            mode='payment',
+            success_url=str(request.base_url),
+            cancel_url=str(request.base_url),
+        )
+        return HTMLResponse(f'<html><body><script>window.location.href="{checkout_session.url}"</script></body></html>')
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
     import uvicorn
-    # Render provides the PORT environment variable automatically
-    port = int(os.environ.get("PORT", 8000))
-    uvicorn.run(app, host="0.0.0.0", port=port)
+    uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", 8000)))
     
