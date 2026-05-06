@@ -12,20 +12,20 @@ templates = Jinja2Templates(directory="templates")
 SUPABASE_URL = os.environ.get("SUPABASE_URL")
 SUPABASE_KEY = os.environ.get("SUPABASE_KEY")
 SQUARE_ACCESS_TOKEN = os.environ.get("SQUARE_ACCESS_TOKEN")
+SQUARE_LOCATION_ID = os.environ.get("SQUARE_LOCATION_ID")
 
 # Initialize Clients
-# Supabase for claim storage
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY) if SUPABASE_URL else None
 
 # Square for payment processing
 square_client = SquareClient(
     access_token=SQUARE_ACCESS_TOKEN,
-    environment='production' # Change to 'sandbox' for testing
+    environment='production' # Toggle to 'sandbox' for testing
 )
 
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
-    """Landing page for the Bafang Warranty Hub."""
+    """Landing page for East Coast E-bike Warranty Hub."""
     return templates.TemplateResponse(
         "index.html", 
         {"request": request, "status": "Ready for Warranty Claims"}
@@ -51,8 +51,7 @@ async def handle_claim(
     except Exception as e:
         print(f"Supabase Error: {e}")
 
-    # 2. CREATE SQUARE CHECKOUT LINK
-    # This creates a simple payment link for a $50 diagnostic fee
+    # 2. CREATE SQUARE CHECKOUT LINK ($50 Diagnostic Fee)
     try:
         body = {
             "idempotency_key": os.urandom(12).hex(),
@@ -60,7 +59,7 @@ async def handle_claim(
                 "redirect_url": str(request.base_url)
             },
             "order": {
-                "location_id": os.environ.get("SQUARE_LOCATION_ID"), # Add this to Render!
+                "location_id": SQUARE_LOCATION_ID,
                 "line_items": [{
                     "name": "Bafang Diagnostic/Warranty Fee",
                     "quantity": "1",
@@ -75,7 +74,6 @@ async def handle_claim(
         result = square_client.checkout.create_payment_link(body=body)
 
         if result.is_success():
-            # Redirect customer to Square's secure checkout page
             checkout_url = result.body['payment_link']['url']
             return RedirectResponse(url=checkout_url, status_code=303)
         else:
@@ -88,4 +86,4 @@ if __name__ == "__main__":
     import uvicorn
     port = int(os.environ.get("PORT", 8000))
     uvicorn.run(app, host="0.0.0.0", port=port)
-    
+            
