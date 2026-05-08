@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel, EmailStr, Field
-from square.client import Client as SquareClient
+from square import Square as SquareClient
 from supabase import create_client, Client
 
 logging.basicConfig(level=logging.INFO)
