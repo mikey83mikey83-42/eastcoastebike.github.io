@@ -1,74 +1,94 @@
+import logging
 import os
 from uuid import uuid4
 
-from fastapi import FastAPI, Request, Form, HTTPException
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
-from fastapi.responses import HTMLResponse, RedirectResponse
-from supabase import create_client, Client
+from pydantic import BaseModel, EmailStr, Field
 from square.client import Client as SquareClient
+from supabase import create_client, Client
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 
-# --- CONFIGURATION ---
 SUPABASE_URL = os.environ.get("SUPABASE_URL")
 SUPABASE_KEY = os.environ.get("SUPABASE_KEY")
 SQUARE_ACCESS_TOKEN = os.environ.get("SQUARE_ACCESS_TOKEN")
 SQUARE_LOCATION_ID = os.environ.get("SQUARE_LOCATION_ID")
-SQUARE_ENVIRONMENT = os.environ.get("SQUARE_ENVIRONMENT", "sandbox")  # sandbox or production
+SQUARE_ENVIRONMENT = os.environ.get("SQUARE_ENVIRONMENT", "sandbox")
+WARRANTY_FEE_CENTS = int(os.environ.get("WARRANTY_FEE_CENTS", "5000"))
+CURRENCY = os.environ.get("CURRENCY", "USD")
 
-# --- VALIDATION ---
+if not SUPABASE_URL or not SUPABASE_KEY:
+    raise RuntimeError("Missing Supabase configuration")
 if not SQUARE_ACCESS_TOKEN:
     raise RuntimeError("Missing SQUARE_ACCESS_TOKEN")
 if not SQUARE_LOCATION_ID:
     raise RuntimeError("Missing SQUARE_LOCATION_ID")
 
-# --- CLIENTS ---
-supabase: Client | None = None
-if SUPABASE_URL and SUPABASE_KEY:
-    supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "https://mikey83mikey83-42.github.io",
+        "https://eastcoastebike.github.io",
+        "http://localhost:3000",
+        "http://127.0.0.1:5500",
+    ],
+    allow_credentials=False,
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["*"],
+)
+
+supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 square_client = SquareClient(
     access_token=SQUARE_ACCESS_TOKEN,
-    environment=SQUARE_ENVIRONMENT
+    environment=SQUARE_ENVIRONMENT,
 )
+
+class ClaimRequest(BaseModel):
+    customer_name: str = Field(..., min_length=2, max_length=100)
+    email: EmailStr
+    serial_number: str = Field(..., min_length=3, max_length=100)
+    issue_description: str = Field(..., min_length=10, max_length=2000)
 
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
     return templates.TemplateResponse(
         "index.html",
-        {"request": request, "status": "Ready for Warranty Claims"}
+        {"request": request, "status": "Ready for Warranty Claims"},
     )
 
 @app.get("/payment-success", response_class=HTMLResponse)
 async def payment_success(request: Request):
     return templates.TemplateResponse(
         "success.html",
-        {"request": request, "message": "Payment completed successfully."}
+        {"request": request, "message": "Payment completed successfully."},
     )
 
 @app.post("/submit-claim")
-async def handle_claim(
-    request: Request,
-    customer_name: str = Form(...),
-    serial_number: str = Form(...),
-    issue: str = Form(...)
-):
+async def handle_claim(request: Request, payload: ClaimRequest):
     claim_data = {
-        "customer_name": customer_name,
-        "serial_number": serial_number,
-        "issue": issue,
-        "status": "pending"
+        "customer_name": payload.customer_name.strip(),
+        "email": payload.email.strip(),
+        "serial_number": payload.serial_number.strip(),
+        "issue": payload.issue_description.strip(),
+        "status": "pending",
+        "payment_status": "unpaid",
     }
 
-    # 1. Save claim to Supabase
-    if supabase:
-        try:
-            supabase.table("claims").insert(claim_data).execute()
-        except Exception as e:
-            raise HTTPException(status_code=500, detail=f"Supabase error: {str(e)}")
+    try:
+        supabase.table("claims").insert(claim_data).execute()
+        logger.info("Claim saved to Supabase")
+    except Exception:
+        logger.exception("Supabase insert failed")
+        raise HTTPException(status_code=500, detail="Failed to save claim")
 
-    # 2. Create Square checkout link
     try:
         body = {
             "idempotency_key": str(uuid4()),
@@ -82,28 +102,39 @@ async def handle_claim(
                         "name": "Bafang Diagnostic/Warranty Fee",
                         "quantity": "1",
                         "base_price_money": {
-                            "amount": 5000,
-                            "currency": "USD"
-                        }
+                            "amount": WARRANTY_FEE_CENTS,
+                            "currency": CURRENCY,
+                        },
                     }
-                ]
-            }
+                ],
+            },
         }
 
         result = square_client.checkout.create_payment_link(body=body)
 
         if result.is_success():
             checkout_url = result.body["payment_link"]["url"]
-            return RedirectResponse(url=checkout_url, status_code=303)
+            return JSONResponse(
+                status_code=200,
+                content={
+                    "success": True,
+                    "message": "Claim submitted successfully",
+                    "checkout_url": checkout_url,
+                },
+            )
 
-        raise HTTPException(status_code=400, detail=result.errors)
+        logger.error("Square error response: %s", result.errors)
+        raise HTTPException(status_code=400, detail="Failed to create payment link")
 
     except HTTPException:
         raise
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Square error: {str(e)}")
+    except Exception:
+        logger.exception("Square payment link creation failed")
+        raise HTTPException(status_code=500, detail="Payment provider error")
 
 if __name__ == "__main__":
     import uvicorn
+
     port = int(os.environ.get("PORT", 10000))
     uvicorn.run(app, host="0.0.0.0", port=port)
+    
