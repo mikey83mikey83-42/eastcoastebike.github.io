@@ -8,24 +8,21 @@
         :root {
             --brand-navy: #1B365D;
             --brand-teal: #4A90A4;
-            --border: #ddd;
-            --bg: #f0f2f5;
-            --text: #333;
         }
 
         body {
-            font-family: Arial, sans-serif;
+            font-family: sans-serif;
             line-height: 1.6;
             margin: 0;
             padding: 20px;
-            background-color: var(--bg);
-            color: var(--text);
+            background-color: #f0f2f5;
+            color: #333;
         }
 
         .container {
             max-width: 500px;
             margin: 20px auto;
-            background: #fff;
+            background: white;
             padding: 30px;
             border-radius: 16px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
@@ -67,19 +64,11 @@
         textarea {
             width: 100%;
             padding: 12px;
-            border: 2px solid var(--border);
+            border: 2px solid #eee;
             border-radius: 8px;
             box-sizing: border-box;
             font-size: 16px;
             margin-bottom: 10px;
-        }
-
-        input:focus,
-        textarea:focus,
-        button:focus {
-            outline: 3px solid rgba(74, 144, 164, 0.35);
-            outline-offset: 2px;
-            border-color: var(--brand-teal);
         }
 
         button {
@@ -100,11 +89,6 @@
             cursor: not-allowed;
         }
 
-        #formStatus {
-            margin-top: 15px;
-            font-size: 0.9rem;
-        }
-
         .footer {
             text-align: center;
             margin-top: 30px;
@@ -119,12 +103,12 @@
     <h1>Warranty Portal</h1>
     <p class="subtitle">Bafang Authorized Service Center</p>
 
-    <form id="warrantyForm" novalidate>
+    <form id="warrantyForm">
         <label for="customer_name">Full Name</label>
-        <input id="customer_name" type="text" name="customer_name" autocomplete="name" required>
+        <input id="customer_name" type="text" name="customer_name" required>
 
         <label for="email">Email Address</label>
-        <input id="email" type="email" name="email" autocomplete="email" required>
+        <input id="email" type="email" name="email" required>
 
         <label for="serial_number">Bafang Serial / Policy #</label>
         <input id="serial_number" type="text" name="serial_number" required>
@@ -133,7 +117,6 @@
         <textarea id="issue_description" name="issue_description" rows="4" required></textarea>
 
         <button type="submit" id="submitBtn">Submit Claim</button>
-        <p id="formStatus" role="status" aria-live="polite"></p>
     </form>
 </div>
 
@@ -142,49 +125,32 @@
 <script>
     const API_URL = 'https://east-coast-ebike-warranty.onrender.com/submit-claim';
     const form = document.getElementById('warrantyForm');
-    const btn = document.getElementById('submitBtn');
-    const status = document.getElementById('formStatus');
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
-        status.textContent = '';
 
-        const data = Object.fromEntries(new FormData(form).entries());
-        data.customer_name = data.customer_name.trim();
-        data.email = data.email.trim();
-        data.serial_number = data.serial_number.trim();
-        data.issue_description = data.issue_description.trim();
-
-        if (data.issue_description.length < 10) {
-            status.textContent = 'Please provide a more detailed fault description.';
-            return;
-        }
-
+        const btn = document.getElementById('submitBtn');
         btn.disabled = true;
         btn.innerText = 'Processing...';
 
-        const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 10000);
+        const data = Object.fromEntries(new FormData(form).entries());
 
         try {
             const response = await fetch(API_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data),
-                signal: controller.signal
             });
 
-            clearTimeout(timeout);
+            const result = await response.json();
 
-            if (response.ok) {
-                status.textContent = 'Success! Your claim has been logged.';
-                form.reset();
+            if (response.ok && result.checkout_url) {
+                window.location.href = result.checkout_url;
             } else {
-                const message = await response.text();
-                status.textContent = message || 'Submission failed.';
+                alert(result.detail || result.message || 'Submission failed.');
             }
         } catch (error) {
-            status.textContent = 'Server unreachable or request timed out.';
+            alert('Server unreachable.');
         } finally {
             btn.disabled = false;
             btn.innerText = 'Submit Claim';
