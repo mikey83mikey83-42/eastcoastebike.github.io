@@ -35,8 +35,20 @@
     }
   ],
   "common_parts_inventory": [
-    {"part_id": "BF-HALL-01", "name": "Bafang Hall Sensor PCBA", "type": "Logic"},
-    {"part_id": "BF-CONT-48V", "name": "Bafang 48V Sine Wave Controller", "type": "Controller"},
-    {"part_id": "BF-GEAR-NYL", "name": "Bafang Internal Nylon Reduction Gear", "type": "Mechanical"}
+    {
+      "part_id": "BF-HALL-01",
+      "name": "Bafang Hall Sensor PCBA",
+      "type": "Logic"
+    },
+    {
+      "part_id": "BF-CONT-48V",
+      "name": "Bafang 48V Sine Wave Controller",
+      "type": "Controller"
+    },
+    {
+      "part_id": "BF-GEAR-NYL",
+      "name": "Bafang Internal Nylon Reduction Gear",
+      "type": "Mechanical"
+    }
   ]
 }
