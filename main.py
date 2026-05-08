@@ -1,41 +1,50 @@
 import os
-import sys
-import subprocess
+from uuid import uuid4
+
 from fastapi import FastAPI, Request, Form, HTTPException
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, RedirectResponse
-
-# This ensures Square is ready before the app fully boots
-try:
-    from square.client import Client as SquareClient
-except ImportError:
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "square"])
-    from square.client import Client as SquareClient
+from supabase import create_client, Client
+from square.client import Client as SquareClient
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 
-# --- CONFIGURATION (Render/Termux Environment Variables) ---
+# --- CONFIGURATION ---
 SUPABASE_URL = os.environ.get("SUPABASE_URL")
 SUPABASE_KEY = os.environ.get("SUPABASE_KEY")
 SQUARE_ACCESS_TOKEN = os.environ.get("SQUARE_ACCESS_TOKEN")
 SQUARE_LOCATION_ID = os.environ.get("SQUARE_LOCATION_ID")
+SQUARE_ENVIRONMENT = os.environ.get("SQUARE_ENVIRONMENT", "sandbox")  # sandbox or production
 
-# Initialize Clients
-supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY) if SUPABASE_URL else None
+# --- VALIDATION ---
+if not SQUARE_ACCESS_TOKEN:
+    raise RuntimeError("Missing SQUARE_ACCESS_TOKEN")
+if not SQUARE_LOCATION_ID:
+    raise RuntimeError("Missing SQUARE_LOCATION_ID")
 
-# Square for payment processing
+# --- CLIENTS ---
+supabase: Client | None = None
+if SUPABASE_URL and SUPABASE_KEY:
+    supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
+
 square_client = SquareClient(
     access_token=SQUARE_ACCESS_TOKEN,
-    environment='production' # Set to 'sandbox' in Render env vars for testing
+    environment=SQUARE_ENVIRONMENT
 )
 
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
-    """Landing page for East Coast E-bike Warranty Hub."""
     return templates.TemplateResponse(
-        "index.html", 
+        "index.html",
         {"request": request, "status": "Ready for Warranty Claims"}
+    )
+
+@app.get("/payment-success", response_class=HTMLResponse)
+async def payment_success(request: Request):
+    return templates.TemplateResponse(
+        "success.html",
+        {"request": request, "message": "Payment completed successfully."}
     )
 
 @app.post("/submit-claim")
@@ -45,53 +54,56 @@ async def handle_claim(
     serial_number: str = Form(...),
     issue: str = Form(...)
 ):
-    # 1. SAVE TO SUPABASE
-    try:
-        data = {
-            "customer_name": customer_name,
-            "serial_number": serial_number,
-            "issue": issue,
-            "status": "pending"
-        }
-        if supabase:
-            supabase.table("claims").insert(data).execute()
-    except Exception as e:
-        print(f"Supabase Error: {e}")
+    claim_data = {
+        "customer_name": customer_name,
+        "serial_number": serial_number,
+        "issue": issue,
+        "status": "pending"
+    }
 
-    # 2. CREATE SQUARE CHECKOUT LINK ($50 Diagnostic Fee)
+    # 1. Save claim to Supabase
+    if supabase:
+        try:
+            supabase.table("claims").insert(claim_data).execute()
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"Supabase error: {str(e)}")
+
+    # 2. Create Square checkout link
     try:
         body = {
-            "idempotency_key": os.urandom(12).hex(),
+            "idempotency_key": str(uuid4()),
             "checkout_options": {
-                "redirect_url": str(request.base_url)
+                "redirect_url": str(request.base_url).rstrip("/") + "/payment-success"
             },
             "order": {
                 "location_id": SQUARE_LOCATION_ID,
-                "line_items": [{
-                    "name": "Bafang Diagnostic/Warranty Fee",
-                    "quantity": "1",
-                    "base_price_money": {
-                        "amount": 5000, # $50.00
-                        "currency": "USD"
+                "line_items": [
+                    {
+                        "name": "Bafang Diagnostic/Warranty Fee",
+                        "quantity": "1",
+                        "base_price_money": {
+                            "amount": 5000,
+                            "currency": "USD"
+                        }
                     }
-                }]
+                ]
             }
         }
 
         result = square_client.checkout.create_payment_link(body=body)
 
         if result.is_success():
-            checkout_url = result.body['payment_link']['url']
+            checkout_url = result.body["payment_link"]["url"]
             return RedirectResponse(url=checkout_url, status_code=303)
-        else:
-            raise HTTPException(status_code=400, detail=str(result.errors))
 
+        raise HTTPException(status_code=400, detail=result.errors)
+
+    except HTTPException:
+        raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=f"Square error: {str(e)}")
 
 if __name__ == "__main__":
     import uvicorn
-    # This line is key: it looks for PORT first, then defaults to 10000
     port = int(os.environ.get("PORT", 10000))
     uvicorn.run(app, host="0.0.0.0", port=port)
-    
